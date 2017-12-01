@@ -143,41 +143,73 @@
       </div>
     </div>
   </div>
-  <!-- <form action="">
-  <button id="btn-before">前序遍历</button>
-  <button id="btn-behind">后序遍历</button>
+  <form>
+    <button id="btn-before">前序遍历</button>
+    <!-- <button id="btn-behind">后序遍历</button>
     <div>
       <input type="text" name="inp-search" id="inp-search">
       <button id="btn-search">查询</button>
-    </div>
-  </form> -->
+    </div> -->
+  </form>
 </body>
 <script>
-  const tree = document.querySelector('.show');
-  let count = 0;
-  const sleep = function (time) {
-    return new Promise((res,rej) => {
-      setTimeout(function() {
+  const tree = document.querySelector('.show');  
+  function sleep(ms) {
+    return new Promise((res, rej) => {
+      setTimeout(() => {
         res('wake');
-      }, time);
+      }, ms)
     });
-  };
-  function *walk(node) {
+  }
+
+
+  async function walk(node) {
     if (node) {
       const child = node.firstElementChild;
       const next = node.nextElementSibling;
       node.style.backgroundColor = 'red';
-      yield sleep(500);
+      await sleep(300);
       node.style.backgroundColor = '#fff';
-      walk(child);
-      walk(next);
+      await walk(child);
+      await walk(next);
     }
   }
-  let w = walk(tree.firstElementChild);
-  console.log(w);
-  let test = w.next();
-  
+  document.getElementById('btn-before').onclick = function (e) {
+    e.preventDefault();
+    console.log('111');
+    walk(tree.firstElementChild);
+  };
 
+  // generator 方法
+
+  // function* preOrder(node) {
+  //   if (node) {
+  //     const child = node.firstElementChild;
+  //     const next = node.nextElementSibling;
+  //     node.style.backgroundColor = 'blue'; //访问
+  //     yield sleep(500); //返回了一个promise对象
+  //     node.style.backgroundColor = '#ffffff'; //延时
+  //     yield* preOrder(child);
+  //     yield* preOrder(next);
+  //   }
+  // }
+
+  // function executor(it) {
+  //   console.log(it);
+  //   function runner(result) {
+  //     if (result.done) {
+  //       return result.value;
+  //     }
+  //     return result.value.then(function (resolve) {
+  //       runner(it.next()); //resolve之后调用
+  //     }, function (reject) {
+  //       throw new Error('useless error');
+  //     });
+  //   }
+
+  //   runner(it.next());
+  // }
+  // executor(preOrder(tree.firstElementChild));
 </script>
 
 </html>
