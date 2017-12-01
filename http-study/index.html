@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+</head>
+<body>
+  <h3>formGet</h3>
+  <form action="/formGet" method="get">
+    <input type="text" name="name" id="">
+    <input type="text" name="number" id="">
+    <input type="submit" value="提交formGet">
+  </form>
+  <h3>ajaxGet</h3>
+  <form>
+    <input type="text" name="name" id="">
+    <input type="text" name="number" id="">
+    <button id="ajaxGet1">ajaxGet1</button>    
+    <p class="result"></p>
+  </form>
+  <h3>formPOST application/x-www-form-urlencoded</h3>
+  <form enctype="application/x-www-form-urlencoded" action="/formPostNormal" method="post">
+    <input type="text" name="name" id="">
+    <input type="text" name="number" id="">
+    <input type="submit" value="formPOST">
+    <button id="ajaxPostJSON">ajaxPostJSON</button>
+    <button id="ajaxPostNormal">ajaxPostNormal</button>
+    <p class="result"></p>    
+  </form>
+  <h3>formPOST multipart/form-data</h3>
+  <form enctype="multipart/form-data" action="/formPostFile" method="post">
+    <input type="text" name="name" id="">
+    <input type="text" name="number" id="">
+    <input type="file" name="file" id="ajaxFile2" multiple=true>
+    <input type="submit" value="formPOST">
+    <button id="ajaxPostFile">ajaxPostFile</button>
+    <p class="result"></p>        
+  </form>
+  <h3>base64 Post</h3>
+  <div class="can">
+    <canvas id="canvas"></canvas>
+    <input type="file" name="canvas" id="canvasFile">
+    <button id="ajax3">ajax发送base64格式图片</button>
+  </div>
+</body>
+<script>
+  var canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d');
+  canvas.width = 150;
+  canvas.height = 150;
+  $('#canvasFile').on('change', function (e) {
+    var file = e.target.files[0];
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+    }
+    img.src = url;
+  });
+  $('#ajax3').on('click', function (e) {
+    var base64 = canvas.toDataURL();
+    $.ajax({
+      url: '/ajaxBase64',
+      type: 'post',
+      data: JSON.stringify({
+        img: base64
+      }),
+      processData: false,  // 不处理数据
+      contentType: 'application/json',   // 不设置内容类型 如果注释掉, 除text外默认urlencode
+      success: function(data) {
+        $this.siblings('.result').html(`收到数据${JSON.stringify(data)}`);
+      },
+      error: function (err) {
+        console.log(err);
+        $this.siblings('.result').html(`错误数据${JSON.stringify(err)}`);
+      },
+    });
+  });
+  
+  $('#ajaxGet1').on('click', function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var data = $this.parent().serialize();
+    $.ajax({
+      url: '/ajaxGet',
+      type: 'get',
+      data: data,
+      success: function(data) {
+        $this.siblings('.result').html(`收到数据${data}`);
+      },
+      error: function (err) {
+        console.log(err);
+        $this.siblings('.result').html(`错误数据${err.responseText || err}`);
+      },
+    })
+  });
+  $('#ajaxPostJSON').on('click', function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var data = $this.parent().serialize(); // 空格会变成 +
+    data = data.replace(/&/g, '","').replace(/=/g, '":"')
+    data = '({"' + data + '"})';
+    var obj = eval(data);
+    $.ajax({
+      url: '/ajaxPostJSON',
+      type: 'post',
+      data: JSON.stringify(obj), 
+      contentType: 'application/json',
+      success: function(data) {
+        $this.siblings('.result').html(`收到数据${data}`);
+      },
+      error: function (err) {
+        console.log(err);
+        $this.siblings('.result').html(`错误数据${err.responseText || err}`);
+      },
+    })
+  });
+  $('#ajaxPostNormal').on('click', function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var data = $this.parent().serialize();
+    $.ajax({
+      url: '/ajaxPostNormal',
+      type: 'post',
+      data: data,
+      // contentType: false, // urlencode格式 如果取消注释, 纯文本会变成text/plain的type
+      success: function(data) { // 收到的是纯文本
+        $this.siblings('.result').html(`收到数据${data}`);
+      },
+      error: function (err) {
+        console.log(err);
+        $this.siblings('.result').html(`错误数据${err.responseText || err}`);
+      },
+    })
+  });
+
+  $('#ajaxPostFile').on('click', function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var fd = new FormData($this.parent()[0]);
+    fd.append("CustomField", "This is some extra data");
+    $.ajax({
+      url: '/ajaxPostFile',
+      type: 'post',
+      data: fd,
+      processData: false,  // 不处理数据(必须false)
+      contentType: false,   // 如果注释掉, 会默认为urlencode
+      success: function(data) {
+        console.log(data);
+        if (typeof data !== 'string') data = JSON.stringify(data);
+        $this.siblings('.result').html(`收到数据${data}`);
+      },
+      error: function (err) {
+        console.log(err);
+        $this.siblings('.result').html(`错误数据${err}`);
+      },
+    });
+  });
+</script>
+</html>

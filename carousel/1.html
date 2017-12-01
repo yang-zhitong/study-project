@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport"  content="width=device-width,initial-scale=1">
+    <style type="text/css">
+	body {
+   		margin: 0;
+	}
+    .carousel {
+	    width: 40%;
+	    margin: 0 auto;
+	}
+    #placeholder1 {	
+    	position: relative;
+    	padding-top: 50%;
+    	overflow:hidden;
+    }
+    #placeholder1 .c-im,
+    #placeholder1 .n-im {
+    	visibility: visible;
+    }
+    #placeholder1 img {
+    	position: absolute;
+    	top: 0;
+    	left: 0;
+    	width: 100%;
+    	height: 100%;
+    	visibility: hidden;
+    }
+    .c-im {
+    	z-index: 0;
+    }
+    .n-im {
+    	z-index: 10;
+    }
+
+
+#placeholder2 {
+   position: relative;
+   padding-top: 50%;
+   overflow: hidden;
+}
+#placeholder2 img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    transition: left .5s ease;
+}
+.buttons {
+    text-align: center;
+    padding-bottom: 10%;
+}
+#placeholder3 {
+	width: 40%;
+	margin: 0 auto;
+   position: relative;
+   padding-top: 40%;
+   /*overflow: hidden;*/
+}
+#placeholder3 img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    transition: left .5s ease;
+    opacity: 1 !important;
+ }
+ h3 {text-align: center;}
+
+    </style>
+  </head>
+
+  <body>
+<h3>这是第一种方法，每次点击才把图片放过去，再进行移动</h3>
+<div class="carousel">
+	<div id="placeholder1" class="placeholder">
+		<img class="c-im" src="images/1.jpg">
+		<img src="images/2.jpg">
+		<img src="images/3.jpg">
+	</div>
+	<div class="pages">
+		<a class="page c-pg" href="images/1.jpg"></a>
+		<a class="page" href="images/2.jpg"></a>
+		<a class="page" href="images/3.jpg"></a>
+	</div>
+	 <div class="buttons">
+    <button type="button" class="left">向左</button>
+    <button type="button" class="right">向右</button>
+  </div>
+</div>
+
+<h3>这是第二种方法，排列好全部图片进行移动,并且监听了状态，只有完成移动，才会进行下一次移动</h3>
+<div class="carousel">
+    <div id="placeholder2" class="placeholder">
+        <img src="images/1.jpg">
+        <img src="images/2.jpg">
+        <img src="images/3.jpg">
+     
+    </div>
+  <div class="buttons">
+    <button type="button" class="left">向左</button>
+    <button type="button" class="right">向右</button>
+  </div>
+</div>
+<h3>这是第二种方法，没有设置overflow，没有opacity，方便观看原理，而且图片数量可以随便增加</h3>
+<div class="carousel">
+    <div id="placeholder3" class="placeholder">
+        <img src="images/1.jpg">
+        <img src="images/2.jpg">
+        <img src="images/3.jpg">
+         <img src="images/4.jpg"> 
+    </div>
+  <div class="buttons">
+    <button type="button" class="left">向左</button>
+    <button type="button" class="right">向右</button>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+
+function Carousel(elem) {
+	this.elem = elem
+	this.images = this.elem.querySelectorAll("img");
+	this.len = this.images.length;
+	this.elem_width = this.elem.clientWidth;
+	this.parent = this.elem.parentNode;
+	this.count = 0;
+	this.left = this.parent.querySelector('.left');
+	this.right = this.parent.querySelector('.right');
+	this.isTransitionComplete = true;
+}
+
+Carousel.prototype.getLast = function() {
+	if (this.count == -this.len) {
+	    this.count = 0;
+	}
+    return (this.len+this.count-1)%this.len;
+}
+
+Carousel.prototype.getNext = function() {
+	if (this.count == -this.len) {
+	    this.count = 0;
+	}
+	return (this.len+this.count+1)%this.len;
+}
+Carousel.prototype.getCurrent = function() {
+	return (this.len+this.count)%this.len;
+}
+
+
+Carousel.prototype.transitionMethod = function() {
+	var tself = this;
+    var len = tself.len;
+    var images = tself.images;
+    var elem_width = tself.elem_width;
+    var last = tself.getLast();  //获得队列的最后一张照片
+
+    for (var i =0;i<len;i++) {
+        images[i].addEventListener("transitionend", function() {
+        	 tself.isTransitionComplete = true;  //检测移动，移动完成就改变对象的移动状态，变成true
+        }, false);   //改为true在捕获阶段进行操作也可以                 
+    }
+ 
+    for (var i =0;i<len;i++) {
+        images[i].style.left = i*elem_width + "px";  //将队列初始化
+    }
+    images[last].style.left = "-" + elem_width + "px";
+
+    this.right.addEventListener("click",function () {
+    	if (tself.isTransitionComplete === true){
+    		tself.isTransitionComplete = false;
+	    	var last = tself.getLast();  //在移动之前，获得需要放到最右边的上一张照片
+
+		    for (var i = 0;i<len;i++){
+		        var final_x = parseInt(images[i].style.left) - elem_width;
+		        images[i].style.opacity = 1;
+		        images[i].style.left = final_x + "px"; //将所有的图片向左移动
+		    }
+
+		    images[last].style.opacity = 0;  //将要移动的照片变成透明，放到最左边。
+		    images[last].style.left = (len-2)*elem_width + "px"; //如果用right控制，就不会有动画效果，会不会提高性能？
+		    tself.count++; //将计数器加1，代表移动后，当前展示的图片
+	    }
+    },false);
+    this.left.addEventListener("click",function () {
+    	if (tself.isTransitionComplete === true){
+    		tself.isTransitionComplete = false;
+	    	tself.count--;  //计数器-1，即获取了要移动过来的照片
+		    var last = tself.getLast();  //获取要移动过来的照片的左面一张照片
+
+		    for (var i = 0;i<len;i++){
+		        var final_x = parseInt(images[i].style.left) + elem_width;
+		        images[i].style.opacity = 1;
+		        images[i].style.left = final_x + "px";  //将所有的照片向右移
+		    }
+		    images[last].style.opacity = 0;
+		    images[last].style.left = "-" + elem_width + "px"; //左面只要保持一张照片就好了，所以可以绝对定位，用right：0同理？
+		}
+	 },false);
+};
+
+
+Carousel.prototype.coverMethod = function() {
+	
+	var cself = this;
+	var len = cself.len;
+	var images = cself.images;
+	
+	cself.right.addEventListener("click" ,function() {
+		var current = cself.getCurrent();
+		var next = cself.getNext();
+		cself.resetClasses();
+		cself.shiftToThePos(current,next,"Right");
+		var final_x = 0;  //好像不管什么时候，final ，终点就是left：0
+		cself.moveElem(current,next,final_x);
+		cself.count++;
+	},false);
+	
+
+	cself.left.addEventListener("click" ,function() {
+		var current = cself.getCurrent(); 
+		var last = cself.getLast(); 
+		cself.resetClasses();
+		cself.shiftToThePos(current,last,"Left");
+		var final_x = 0;	
+		cself.moveElem(current,last,final_x);
+		cself.count--;
+	},false);
+}
+
+Carousel.prototype.resetClasses = function() {
+	//这里的images是nodelit,但是有foreach方法用来遍历，console输出一下就可以看到
+	this.images.forEach(function(item,index,array) {
+		item.className= "";
+	}); 
+}
+
+Carousel.prototype.shiftToThePos = function(current,next,direction) {
+	this.images[next].className = "n-im";
+	this.images[current].className = "c-im";
+	switch(direction) {
+		case "Right":
+			this.images[next].style.left = this.elem_width + "px";
+			break;
+		case "Left":
+			this.images[next].style.left = "-" + this.elem_width + "px";
+			break;
+	}
+}
+
+
+
+Carousel.prototype.moveElem = function(current,next,final_x) {
+	var cself = this;
+	var images = cself.images;
+	var n_x_pos = parseInt(images[next].style.left);  //去掉px，变成整数
+
+	if (n_x_pos == final_x) {
+		return true;
+	}
+
+	if (n_x_pos < final_x) {  
+		var dist = Math.ceil((final_x - n_x_pos)/10); 
+		n_x_pos += dist;  
+	}
+	else if(n_x_pos > final_x) {
+		var dist = Math.ceil((n_x_pos - final_x)/10);
+		n_x_pos -= dist;
+	}
+
+	images[next].style.left = n_x_pos + "px";
+	var repeat = setTimeout(function() {
+		cself.moveElem(current,next,final_x);
+	},10);
+	// var repeat = "self.moveElem('"+current+"',"+next+","+final_x+")";
+	// images[next].movement = setTimeout(repeat,10);
+}
+
+var carousel1 = new Carousel(document.getElementById('placeholder1'));
+carousel1.coverMethod();
+
+var carousel2 = new Carousel(document.getElementById('placeholder2'));
+carousel2.transitionMethod();
+
+var carousel3 = new Carousel(document.getElementById('placeholder3'));
+carousel3.transitionMethod();
+	//获得元素宽度，分别将各个元素给个trans，1*widht，2*width
+	//点击button，获得下一个i，current
+	//将i元素赋予 0 0 0的位置，分别将每个元素赋予 abs（j-current）,得到距离
+	// let trans = "translate3d(" + "-" + elem_width + "px,0,0)";
+	// images[next].style.webkitTransform = trans;
+
+
+
+
+</script>
+  </body>
+  </html>

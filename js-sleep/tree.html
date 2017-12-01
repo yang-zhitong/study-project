@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>task_1_8_1</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /*1.set div style*/
+
+    .show {
+      float: left;
+      position: relative;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      overflow: hidden;
+    }
+
+    div {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-around;
+      align-items: center;
+      background: #fff;
+      margin: 5px;
+      padding: 5px;
+      height: 80%;
+      border: 3px solid #000;
+      border-radius: 4px;
+      color: #000;
+    }
+    /*2.set form style*/
+
+    form {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
+      align-items: center;
+      float: left;
+      position: relative;
+      top: 70px;
+      width: 100%;
+    }
+
+    button[id*="btn-"] {
+      display: inline-block;
+      margin: 0 10px;
+      width: 70px;
+      height: 30px;
+      border: 2px solid #000;
+      border-radius: 5px;
+      background: #fff;
+      font-weight: bold;
+      line-height: 26px;
+      color: #b0e11e;
+      cursor: pointer;
+      -webkit-transition: color 0.1s linear, background 0.1s linear;
+      transition: color 0.1s linear, background 0.1s linear;
+    }
+
+    button[id*="btn-"]:hover,
+    button[id*="btn-"]:focus {
+      color: #fff;
+      background: #b0e11e;
+    }
+
+    #inp-search {
+      border: 2px solid #000;
+      border-radius: 5px;
+      padding-left: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="show">夜来
+    <div>风雨
+      <div>小楼听
+        <div>花既</div>21
+        <div>凋零</div>23
+        <div>且卖花</div>45
+        <div>梦回</div>91
+      </div>
+      <div>巫山
+        <div>任风语</div>harry
+        <div>爱上</div>potter
+      </div>
+    </div>
+    <div>层楼
+      <div>不道愁</div>蝶恋花
+      <div>小星</div>西江月
+      <div>花非花</div>江城子
+    </div>
+    <div>
+      <div>雾非雾
+        <div>满江红</div>念奴娇
+      </div>
+      <div>
+        <div>忆江南</div>herry
+        <div>扑算子</div>BOOK
+        <div>醉花阴</div>book
+      </div>
+    </div>
+    <div>沁园春</div>ship
+    <div>
+      <div>
+        <div>
+          <div>一剪梅</div>SHIP
+          <div>定风波</div>a
+          <div>虞美人</div>b
+        </div>
+        <div>苏轼</div>c
+      </div>
+      <div>
+        <div>李清照</div>d
+        <div>柳永</div>e
+      </div>
+    </div>
+    <div>
+      <div>
+        <div>
+          <div>辛弃疾</div>90
+          <div>李白</div>23
+          <div>杜甫</div>56
+        </div>
+        <div>陆游</div>11
+      </div>
+      <div>
+        <div>屈原</div>111
+        <div>
+          <div>陈子昂</div>900
+          <div>
+            <div>王维</div>809
+            <div>宋徽宗</div>788
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <form action="">
+  <button id="btn-before">前序遍历</button>
+  <button id="btn-behind">后序遍历</button>
+    <div>
+      <input type="text" name="inp-search" id="inp-search">
+      <button id="btn-search">查询</button>
+    </div>
+  </form> -->
+</body>
+<script>
+  const tree = document.querySelector('.show');
+  let count = 0;
+  const sleep = function (time) {
+    return new Promise((res,rej) => {
+      setTimeout(function() {
+        res('wake');
+      }, time);
+    });
+  };
+  function *walk(node) {
+    if (node) {
+      const child = node.firstElementChild;
+      const next = node.nextElementSibling;
+      node.style.backgroundColor = 'red';
+      yield sleep(500);
+      node.style.backgroundColor = '#fff';
+      walk(child);
+      walk(next);
+    }
+  }
+  let w = walk(tree.firstElementChild);
+  console.log(w);
+  let test = w.next();
+  
+
+</script>
+
+</html>

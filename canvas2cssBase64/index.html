@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>canvas to img</title>
+	<style>
+		body {
+			background-color: blanchedalmond;
+		}
+
+		img {
+			padding: 50px;
+			background-repeat: no-repeat;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="textCanvas"></canvas>
+	<button id="submit">生成图片</button>
+	<div id="tip">等待服务器确认</div>
+	<img class="elem0" src="" alt="">
+	<img class="elem1" src="" alt="">
+	<img class="elem2" src="" alt="">
+	<img class="elem3" src="" alt="">
+
+	<script>
+		var tip = document.getElementById('tip');
+		var sub = document.getElementById('submit');
+		var arr = [];
+
+		function createCanvas(w, h) {
+			var c = document.getElementById('textCanvas').getContext('2d');
+			c.canvas.width = w;
+			c.canvas.height = h;
+			// 描点, 画背景
+			c.beginPath();
+			c.moveTo(0, 0);
+			c.lineTo(30, 0);
+			c.lineTo(60, 30);
+			c.lineTo(60, 60);
+			c.closePath();
+			c.lineWidth = 1;
+			c.strokeStyle = '#ef9624';
+			c.fillStyle = '#ef9624';
+			c.stroke();
+			c.fill();
+			// 旋转画布, 准备写字
+			c.rotate(45 * Math.PI / 180);
+			c.translate(12, -30);  // 勾股定理算出位移
+			c.font = '14px'; // 可以改字体
+			c.textAlign = 'center';
+
+			// 循环生成
+			for (let i = 1; i < 10; i++) {
+				let img = document.createElement('img');
+				let t = i + '期';
+				c.strokeStyle = '#ef9624';
+				c.fillStyle = '#fff';
+				c.fillText(t, 30, 24);
+				arr.push(c.canvas.toDataURL());
+				// 用背景色写一遍文字, 不再重新生成画布
+				c.strokeStyle = '#ef9624';
+				c.fillStyle = '#ef9624';
+				c.fillText(t, 30, 24);
+				c.strokeText(t, 30, 24);
+			}
+		}
+		createCanvas(60, 60);
+
+		// ajax发送
+		sub.addEventListener('click', function () {
+			var xhr = new XMLHttpRequest();
+			tip.innerText = '发送中';
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					if (JSON.parse(xhr.response).code === 10000) {
+						createImg();
+					}
+				}
+			};
+			xhr.open('POST', '/upload', true);
+			xhr.send(JSON.stringify(arr));
+		});
+
+		function createImg() {
+			let css = document.createElement('link');
+			css.rel = 'stylesheet';
+			css.setAttribute('href', './1.css');
+			css.setAttribute('type', 'text/css');
+			console.log(css);
+			tip.innerText = '加载css'
+			document.head.appendChild(css);
+		}
+	</script>
+</body>
+
+</html>
