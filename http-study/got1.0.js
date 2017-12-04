@@ -4,6 +4,9 @@ var https = require('https');
 var urlLib = require('url');
 var zlib = require('zlib');
 var PassThrough = require('stream').PassThrough;
+var assign = require('object-assign');
+var read = require('read-all-stream');
+var timeout = require('timed-out');
 
 var got = function (url, opts, cb) {
 	if (typeof opts === 'function') {
@@ -32,7 +35,8 @@ var got = function (url, opts, cb) {
 	}
 
 	// merge additional headers
-	opts.headers = Object.assign({
+	opts.headers = assign({
+		'user-agent': 'https://github.com/sindresorhus/got',
 		'accept-encoding': 'gzip,deflate'
 	}, opts.headers || {});
 
@@ -41,26 +45,20 @@ var got = function (url, opts, cb) {
 	var get = function (url, opts, cb) {
 		var parsedUrl = urlLib.parse(url);
 		var fn = parsedUrl.protocol === 'https:' ? https : http;
-		var arg = Object.assign({}, parsedUrl, opts);
+		var arg = assign({}, parsedUrl, opts);
 
-		fn.get(arg, function (res) {
+		var req = fn.get(arg, function (response) {
+			var statusCode = response.statusCode;
+			var res = response;
+
 			// redirect
-			if (res.statusCode < 400 && res.statusCode >= 300 && res.headers.location) {
-				res.destroy();
-
+			if (statusCode < 400 && statusCode >= 300 && res.headers.location) {
 				if (++redirectCount > 10) {
-					cb(new Error('Redirected 10 times. Aborting.'));
+					cb(new Error('Redirected 10 times. Aborting.'), undefined, res);
 					return;
 				}
 
 				get(urlLib.resolve(url, res.headers.location), opts, cb);
-				return;
-			}
-
-			if (res.statusCode < 200 || res.statusCode > 299) {
-        console.log('??????', cb);
-				res.destroy();
-				cb(res.statusCode);
 				return;
 			}
 
@@ -70,37 +68,34 @@ var got = function (url, opts, cb) {
 				res = unzip;
 			}
 
+			if (statusCode < 200 || statusCode > 299) {
+				read(res, encoding, function (error, data) {
+					var err = error || new Error('Couldn\'t connect to ' + url + '.');
+					err.code = statusCode;
+					cb(err, data, response);
+				});
+				return;
+			}
+
 			// pipe the response to the proxy if in proxy mode
 			if (proxy) {
 				res.on('error', proxy.emit.bind(proxy, 'error')).pipe(proxy);
 				return;
 			}
-			res.once('error', cb);
 
-			var chunks = [];
-			var len = 0;
-
-			res.on('data', function (chunk) {
-				chunks.push(chunk);
-				len += chunk.length;
-			});
-
-			res.once('end', function () {
-				var data = Buffer.concat(chunks, len);
-
-				if (encoding !== null) {
-					data = data.toString(encoding || 'utf8');
-				}
-
-				cb(null, data, res);
-			});
+			read(res, encoding, cb, response);
 		}).once('error', cb);
+
+		if (opts.timeout) {
+			timeout(req, opts.timeout);
+		}
 	};
 
 	get(url, opts, cb);
 
 	return proxy;
 };
+
 
 var pro = got('http://localhost:3000/ajaxGet?name=123&number=hello');
 
