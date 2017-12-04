@@ -40,9 +40,8 @@ app.post('/formPostNormal', function(req, res) {
 
 app.post('/ajaxPostJSON', function(req, res) {
   res.setHeader('Content-Type', 'application/json; charset=UTF-8');        
-  var obj = JSON.parse(decodeURI(JSON.stringify(req.body)));
-  console.log(obj);
-  res.end(decodeURI(JSON.stringify(req.body)));
+  console.log(req.body);
+  res.end(JSON.stringify(req.body));
 });
 
 app.post('/ajaxPostNormal', function(req, res) {

@@ -101,17 +101,19 @@
   $('#ajaxPostJSON').on('click', function(e) {
     e.preventDefault();
     var $this = $(this);
-    var data = $this.parent().serialize(); // 空格会变成 +
-    data = data.replace(/&/g, '","').replace(/=/g, '":"')
-    data = '({"' + data + '"})';
-    var obj = eval(data);
+    var obj = {
+      a: 'haha',
+      b: {
+        c: '哈哈'
+      }
+    }
     $.ajax({
       url: '/ajaxPostJSON',
       type: 'post',
       data: JSON.stringify(obj), 
       contentType: 'application/json',
       success: function(data) {
-        $this.siblings('.result').html(`收到数据${data}`);
+        $this.siblings('.result').html(`收到数据${JSON.stringify(data)}`);
       },
       error: function (err) {
         console.log(err);
