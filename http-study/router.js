@@ -4,6 +4,32 @@ const path = require('path');
 const fs = require('fs');
 const url = require('url');
 const querystring = require('querystring');
+const concat = require('concat-files');
+
+function listDir(path) {
+  return new Promise((resolve, reject) => {
+      fs.readdir(path, (err, data) => {
+          // 尚未测试, 把mac系统下的临时文件去掉
+          if (data && data.length > 0 && data[0] === '.DS_Store') {
+              data.splice(0, 1)
+          }
+          resolve(data)
+      })
+  })
+}
+
+async function mergeFiles(srcDir, targetDir, newFileName, size) {
+  let targetStream = fs.createWriteStream(path.join(targetDir, newFileName))
+  let fileArr = await listDir(srcDir)
+  // 把文件名加上文件夹的前缀
+  for (let i = 0; i < fileArr.length; i++) {
+      fileArr[i] = srcDir + '/' + fileArr[i]
+  }
+  console.log(fileArr)
+  concat(fileArr, path.join(targetDir, newFileName), () => {
+      console.log('Merge Success@!')
+  })
+}
 
 // 手动解析
 function parseFile(req, res) {
@@ -32,6 +58,7 @@ function parseFile(req, res) {
     // }
   });
 }
+
 function parseText(req, res, isJson) {
   let postData = '';
   req.addListener('data', function (postDataChunk) {
@@ -54,7 +81,8 @@ function busboyParse(req, res) {
   const busboy = new Busboy({
     headers: req.headers
   });
-  let fileObj = {}, fieldObj = {};;
+  let fileObj = {}, fieldObj = {};
+  // 处理文件
   busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
     console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
     file.on('data', function (data) {
@@ -65,16 +93,20 @@ function busboyParse(req, res) {
       console.log('File [' + fieldname + '] Finished');
     });
     Object.assign(fileObj, {fieldname, filename, encoding, mimetype});
-    const saveTo = path.join(__dirname, filename);
+    const saveTo = path.join(`${__dirname}/uploads`, fieldname);
     file.pipe(fs.createWriteStream(saveTo));
   });
+  // 处理表单
   busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
     fieldObj[fieldname] = Object.assign({}, {fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype}); 
-    console.log('Field [' + fieldname + ']: value: ' + inspect(val));
+    // console.log('Field [' + fieldname + ']: value: ' + inspect(val));
   });
   busboy.on('finish', function () {
-    console.log('Done parsing form!');
-    res.end(JSON.stringify(Object.assign({}, { fileObj }, { fieldObj })));
+    // 最后合并文件
+    if (fieldObj.isLastChunk.val === '1') {
+      mergeFiles(`${__dirname}/uploads`, __dirname, fieldObj.fileName.val);
+    }
+    res.end(JSON.stringify(Object.assign({status: 200}, { fileObj }, { fieldObj })));
   });
   req.pipe(busboy);
 }
@@ -97,6 +129,10 @@ const route = (url) => {
 
 register('/', (req, res) => {
   res.end(fs.readFileSync('./index.html'));
+});
+
+register('/split', (req, res) => {
+  res.end(fs.readFileSync('./split.html'));
 });
 
 register('/formGet', (req, res) => {

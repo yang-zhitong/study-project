@@ -21,6 +21,11 @@ app.get('/', function (req, res) {
   res.end(fs.readFileSync('./index.html'));
 });
 
+app.get('/split', function (req, res) {
+  res.setHeader('Content-Type', 'text/html; charset=UTF-8');    
+  res.end(fs.readFileSync('./split.html'));
+});
+
 app.get('/formGet', function(req, res) {
   res.write('you posted:\n');
   res.end(JSON.stringify(req.query));
