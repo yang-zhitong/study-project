@@ -153,15 +153,7 @@
   </form>
 </body>
 <script>
-  const tree = document.querySelector('.show');  
-  function sleep(ms) {
-    return new Promise((res, rej) => {
-      setTimeout(() => {
-        res('wake');
-      }, ms)
-    });
-  }
-
+  const tree = document.querySelector('.show');
 
   async function walk(node) {
     if (node) {

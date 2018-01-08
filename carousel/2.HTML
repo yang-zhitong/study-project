@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="http://lib.baomitu.com/jquery/2.2.4/jquery.min.js"></script>
+  <script src="./js/slide.js"></script>
+</head>
+
+<body>
+  <style>
+    li {
+      display: inline-block;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+    .control li {
+      padding: 10px;
+      margin: 0 5px;
+      background-color: red;
+    }
+  </style>
+  <div class="slide">
+    <ul class="control">
+
+    </ul>
+    <ul class="imgs">
+      <li>
+        <img src="./images/1.jpg" alt="">
+      </li>
+      <li>
+        <img src="./images/2.jpg" alt="">
+      </li>
+      <li>
+        <img src="./images/3.jpg" alt="">
+      </li>
+      <li>
+        <img src="./images/4.jpg" alt="">
+      </li>
+      <li>
+        <img src="./images/4.jpg" alt="">
+      </li>
+      <li>
+        <img src="./images/3.jpg" alt="">
+      </li>
+      <li>
+        <img src="./images/2.jpg" alt="">
+      </li>
+      <li>
+        <img src="./images/1.jpg" alt="">
+      </li>
+    </ul>
+  </div>
+  <script>
+    $(function () {
+      $(".slide").slide({
+        titCell: ".control",
+        mainCell: ".imgs",
+        autoPage: true,
+        effect: "left",
+        vis: 5,
+        trigger: "click",
+        mouseOverStop: false
+      });
+    });
+  </script>
+</body>
+
+</html>
