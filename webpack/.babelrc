@@ -1,1 +1,1 @@
-{ "presets": ["react", "env"] }
+{ "presets": ["env"] }

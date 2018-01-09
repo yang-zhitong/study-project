@@ -1,10 +1,4 @@
-import Header from "./Header.html";
-import style from "./style.css";
-
-$("h1").on("click", function() {
-  $(this).css({
-    backgroundColor: "red"
-  });
-});
+import Header from "./header.html";
+import "./header.css";
 
 export default Header;
