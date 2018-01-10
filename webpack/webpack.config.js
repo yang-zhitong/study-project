@@ -1,34 +1,30 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const { WebPlugin } = require("web-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = {
   devtool: "eval-source-map",
+  context: path.resolve(__dirname, "app"),
   entry: {
-    app1: "./app/app.js",
-    app2: "./app/app2.js"
+    app: "./pages/index/index.js",
+    app2: "./pages/login/login.js"
   },
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "[name].js"
   },
-  resolve:{
-    alias:{
-      com: './app/components/'
+  resolve: {
+    alias: {
+      com: "./components/"
     }
-  }
+  },
   module: {
     rules: [
       {
-        test: /.js$/,
+        test: /(.jxs)|(.js)$/,
         use: {
           loader: "babel-loader"
-        },
-        noParse: content => {
-          // content 代表一个模块的文件路径
-          // 返回 true or false
-          return /jquery|chartjs/.test(content);
         },
         exclude: /node_modules/
       },
@@ -67,14 +63,16 @@ module.exports = {
     inline: true //实时刷新
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery": "jquery"
-    }),
-    new HtmlWebpackPlugin({
-      hash: true,
-      template: __dirname + "/app/index.tmpl.html" //new 一个这个插件的实例，并传入相关的参数
+    // new webpack.ProvidePlugin({
+    //   $: "jquery",
+    //   jQuery: "jquery",
+    //   "window.jQuery": "jquery"
+    // }),
+
+    // 一个 WebPlugin 对应一个 HTML 文件
+    new WebPlugin({
+      template: "./app/template.html", // HTML 模版文件所在的文件路径
+      filename: "index.html" // 输出的 HTML 的文件名称
     }),
     new ExtractTextPlugin("style.css")
   ],

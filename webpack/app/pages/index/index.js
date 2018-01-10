@@ -1,7 +1,7 @@
-const show = require("./components/main/main.js");
-require("./app.css");
+const show = require("../../components/main/main.js");
+require("./index.css");
 
-show("world");
+// show("world");
 
 // 进行路由匹配
 $(document).ready(function() {
