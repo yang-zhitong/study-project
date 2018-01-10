@@ -1,20 +1,34 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = {
   devtool: "eval-source-map",
-  entry: "./app/app.js",
+  entry: {
+    app1: "./app/app.js",
+    app2: "./app/app2.js"
+  },
   output: {
     path: path.resolve(__dirname, "public"),
-    filename: "bundle.js"
+    filename: "[name].js"
   },
+  resolve:{
+    alias:{
+      com: './app/components/'
+    }
+  }
   module: {
     rules: [
       {
         test: /.js$/,
         use: {
           loader: "babel-loader"
+        },
+        noParse: content => {
+          // content 代表一个模块的文件路径
+          // 返回 true or false
+          return /jquery|chartjs/.test(content);
         },
         exclude: /node_modules/
       },
@@ -26,9 +40,10 @@ module.exports = {
           },
           {
             loader: "css-loader",
-            // options: {
-            //   modules: true, // 指定启用css modules
-            // }
+            options: {
+              minimize: true
+              // modules: true, // 指定启用css modules
+            }
           },
           {
             loader: "postcss-loader"
@@ -38,6 +53,10 @@ module.exports = {
       {
         test: /\.html$/,
         loader: "html-loader"
+      },
+      {
+        test: /\.(gif|png|jpe?g|eot|woff|ttf|svg|pdf)$/,
+        use: ["file-loader"]
       }
     ]
   },
@@ -56,7 +75,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       hash: true,
       template: __dirname + "/app/index.tmpl.html" //new 一个这个插件的实例，并传入相关的参数
-    })
+    }),
+    new ExtractTextPlugin("style.css")
   ],
   externals: {
     jquery: "$"
