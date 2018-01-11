@@ -1,4 +1,9 @@
-import Header from "./header.html";
 import "./header.css";
 
-export default Header;
+const html = require("./header.html");
+
+$("body").on("click", "h1", function() {
+  $(this).css({ color: "red" });
+});
+
+module.exports = html;
