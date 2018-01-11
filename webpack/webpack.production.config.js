@@ -1,19 +1,33 @@
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
+const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const DefinePlugin = require("webpack/lib/DefinePlugin");
+const { AutoWebPlugin } = require("web-webpack-plugin");
+
+// 自动寻找 pages 目录下的所有目录，把每一个目录看成一个单页应用
+const autoWebPlugin = new AutoWebPlugin("pages", {
+  template: "./app/template.html", // HTML 模版文件所在的文件路径
+  postEntrys: ["./app/common.css"], // 所有页面都依赖这份通用的 CSS 样式文件
+  // 提取出所有页面公共的代码
+  commonsChunk: {
+    name: "common" // 提取出公共代码 Chunk 的名称
+  }
+});
 
 module.exports = {
-  entry: __dirname + "/app/app.js", //已多次提及的唯一入口文件
+  devtool: "eval-source-map",
+  context: path.resolve(__dirname, "app"),
+  entry: autoWebPlugin.entry({
+    // 这里可以加入你额外需要的 Chunk 入口
+  }),
   output: {
-    path: __dirname + "/build",
-    filename: "bundle.js"
+    path: path.resolve(__dirname, "public"),
+    filename: "[name]_[chunkhash:8].js"
   },
-  devtool: "null", //注意修改了这里，这能大大压缩我们的打包代码
-  devServer: {
-    contentBase: "./public", //本地服务器所加载的页面所在的目录
-    historyApiFallback: true, //不跳转
-    inline: true,
-    hot: true
+  resolve: {
+    alias: {
+      com: "./components/"
+    }
   },
   module: {
     rules: [
@@ -33,8 +47,8 @@ module.exports = {
           {
             loader: "css-loader",
             options: {
-              modules: true, // 指定启用css modules
-              localIdentName: "[name]__[local]--[hash:base64:5]" // 指定css的类名格式
+              minimize: true
+              // modules: true, // 指定启用css modules
             }
           },
           {
@@ -45,20 +59,31 @@ module.exports = {
       {
         test: /\.html$/,
         loader: "html-loader"
+      },
+      {
+        test: /\.(gif|png|jpe?g|eot|woff|ttf|svg|pdf)$/,
+        use: ["file-loader"]
       }
     ]
   },
+  devServer: {
+    port: "2017",
+    contentBase: "./public", //本地服务器所加载的页面所在的目录
+    historyApiFallback: true, //不跳转
+    inline: true //实时刷新
+  },
   plugins: [
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery": "jquery"
+    autoWebPlugin,
+    new ExtractTextPlugin({
+      filename: `[name]_[contenthash:8].css` // 给输出的 CSS 文件名称加上 hash 值
     }),
-    new HtmlWebpackPlugin({
-      hash: true,
-      template: __dirname + "/app/index.tmpl.html" //new 一个这个插件的实例，并传入相关的参数
+    new DefinePlugin({
+      // 定义 NODE_ENV 环境变量为 production 去除 react 代码中的开发时才需要的部分
+      "process.env": {
+        NODE_ENV: JSON.stringify("production")
+      }
     }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
+    // 压缩输出的 JS 代码
     new UglifyJsPlugin({
       // 最紧凑的输出
       beautify: false,
@@ -74,8 +99,7 @@ module.exports = {
         // 提取出出现多次但是没有定义成变量去引用的静态值
         reduce_vars: true
       }
-    }),
-    new ExtractTextPlugin("style.css")
+    })
   ],
   externals: {
     jquery: "$"
