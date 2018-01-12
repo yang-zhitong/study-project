@@ -4,7 +4,6 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const DefinePlugin = require("webpack/lib/DefinePlugin");
 const autoWebPlugin = require("./config/webpack.entry.js");
 
-
 module.exports = {
   devtool: "eval-source-map",
   context: path.resolve(__dirname, "app"),
@@ -14,7 +13,7 @@ module.exports = {
     filename: "[name]_[chunkhash:8].js"
   },
   resolve: require("./config/webpack.resolve.js"),
-  module: require("./config/webpack.module.js"),
+  module: require("./config/webpack.module.js")("dev"),
   devServer: {
     port: "2017",
     contentBase: "./public", //本地服务器所加载的页面所在的目录
