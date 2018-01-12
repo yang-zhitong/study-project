@@ -3,6 +3,7 @@ const header = require("../../components/header/header.js");
 
 const mainCss = require("com/main/main.css");
 const main = require("com/main/main.ejs");
+const html = require('./index.html');
 
 // 进行路由匹配
 $(document).ready(function() {
@@ -12,6 +13,7 @@ $(document).ready(function() {
   }).then(() => {
     $("body").append(main({ css: mainCss, data: "ajax data" }));
   });
+  $('body').append($(html));
   // $("body").on("click", "h1", function() {
   //   $(this).css({ backgroundColor: "yellow" });
   // });
