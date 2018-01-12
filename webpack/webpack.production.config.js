@@ -15,7 +15,6 @@ const autoWebPlugin = new AutoWebPlugin("./app/pages", {
 });
 
 module.exports = {
-  devtool: "eval-source-map",
   context: path.resolve(__dirname, "app"),
   entry: autoWebPlugin.entry({
     // 这里可以加入你额外需要的 Chunk 入口
@@ -26,7 +25,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      com: "./components/"
+      com: path.resolve(__dirname, "app/components/")
     }
   },
   module: {
@@ -40,25 +39,29 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader",
-            options: {
-              minimize: true
-              // modules: true, // 指定启用css modules
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: [
+            {
+              loader: "css-loader",
+              options: {
+                minimize: true,
+                modules: true // 指定启用css modules
+              }
+            },
+            {
+              loader: "postcss-loader"
             }
-          },
-          {
-            loader: "postcss-loader"
-          }
-        ]
+          ]
+        })
       },
       {
         test: /\.html$/,
         loader: "html-loader"
+      },
+      {
+        test: /\.ejs$/,
+        loader: "ejs-loader"
       },
       {
         test: /\.(gif|png|jpe?g|eot|woff|ttf|svg|pdf)$/,
@@ -79,9 +82,7 @@ module.exports = {
     }),
     new DefinePlugin({
       // 定义 NODE_ENV 环境变量为 production 去除 react 代码中的开发时才需要的部分
-      "process.env": {
-        NODE_ENV: JSON.stringify("production")
-      }
+      ENV: JSON.stringify("production")
     }),
     // 压缩输出的 JS 代码
     new UglifyJsPlugin({
