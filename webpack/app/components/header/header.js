@@ -1,9 +1,7 @@
-import "./header.css";
+const css = require("./header.css");
 
-const html = require("./header.html");
+const template = require("./header.ejs");
 
-$("body").on("click", "h1", function() {
-  $(this).css({ color: "red" });
-});
+const h1s = [{ h1: "first" }, { h1: "sec" }, { h1: "third" }, { h1: "fourth" }];
 
-module.exports = html;
+module.exports = template({ css, h1s });
