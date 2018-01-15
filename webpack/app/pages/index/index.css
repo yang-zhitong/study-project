@@ -27,3 +27,8 @@ ul {
   margin: 0;
   padding: 0;
 }
+
+#app {
+  border: 1px solid #000;
+  height: 300px;
+}

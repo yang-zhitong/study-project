@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const DefinePlugin = require("webpack/lib/DefinePlugin");
@@ -21,7 +22,10 @@ module.exports = {
     inline: true //实时刷新
   },
   plugins: [
-    autoWebPlugin,
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "manifest",
+      minChunks: Infinity
+    }),
     new ExtractTextPlugin({
       filename: `[name]_[contenthash:8].css` // 给输出的 CSS 文件名称加上 hash 值
     }),

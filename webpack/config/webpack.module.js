@@ -41,21 +41,21 @@ const proRule = {
 };
 const devRule = {
   test: /\.css$/,
-  use: [
-    {
-      loader: "style-loader"
-    },
-    {
-      loader: "css-loader",
-      options: {
-        minimize: true,
-        modules: true // 指定启用css modules
+  use: ExtractTextPlugin.extract({
+    fallback: "style-loader",
+    use: [
+      {
+        loader: "css-loader",
+        options: {
+          minimize: true,
+          modules: true // 指定启用css modules
+        }
+      },
+      {
+        loader: "postcss-loader"
       }
-    },
-    {
-      loader: "postcss-loader"
-    }
-  ]
+    ]
+  })
 };
 
 module.exports = function(isDev) {

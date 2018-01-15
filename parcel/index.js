@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs"; // 先引入fs再引入babel, 才不会报错
 import "babel-polyfill";
 
 const ejs = require("ejs");
@@ -22,5 +22,6 @@ $(function() {
     await new Promise((res, rej) => setTimeout(() => res(), 1500));
     $("footer").css({ top: "50%" });
   }
+  // async await测试IE9+支持
   name();
 });
