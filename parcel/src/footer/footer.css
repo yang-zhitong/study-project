@@ -1,0 +1,9 @@
+footer {
+  height: 100px;
+  text-align: center;
+  font-size: 20px;
+  position: absolute;
+  bottom: 0;
+  background-color: blanchedalmond;
+  width: 100%;
+}

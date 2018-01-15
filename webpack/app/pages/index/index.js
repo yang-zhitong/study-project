@@ -7,13 +7,13 @@ const html = require('./index.html');
 
 // 进行路由匹配
 $(document).ready(function() {
-  $("body").html(header);
+  $(".container").html(header);
   new Promise((res, rej) => {
     setTimeout(() => res(), 2000);
   }).then(() => {
-    $("body").append(main({ css: mainCss, data: "ajax data" }));
+    $("container").append(main({ css: mainCss, data: "ajax data" }));
   });
-  $('body').append($(html));
+  $('container').append($(html));
   // $("body").on("click", "h1", function() {
   //   $(this).css({ backgroundColor: "yellow" });
   // });
