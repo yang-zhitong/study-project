@@ -1,0 +1,140 @@
+.partner-company {
+  margin-top: 90px;
+  height: 600px;
+}
+
+.partner-company .partners {
+  height: 370px;
+  width: 988px;
+  margin: 81px auto 0 auto;
+  background: url(../images/friend_com.png) no-repeat center top;
+}
+
+.partner-company .partner-logo {
+  width: 125px;
+  height: 142px;
+  position: absolute;
+  display: block;
+}
+
+.partner-company .partner-logo img {
+  max-width: 100%;
+}  
+
+.partner-company .logo1 {
+  /* left: 210px;
+  top: 298px; */
+  left: 233px;
+  top: 305px;
+}  
+.partner-company .logo2 {
+  /* left: 395px;
+  top: 404px; */
+  left: 417px;
+  top: 410px;
+}  
+.partner-company .logo3 {
+  /* left: 579px;
+  top: 298px; */
+  left: 602px;
+  top: 305px;
+}  
+.partner-company .logo4 {
+  /* left: 764px;
+  top: 404px; */
+  left: 786px;
+  top: 410px;
+}  
+
+.partner-company .partner-logo img:hover {
+  transform: rotateY(360deg);
+  transition: transform 1.5s ease;    
+}  
+
+.news {
+  margin-top: 93px;
+}
+
+.news .show-news {
+  margin-top: 83px;
+}
+
+.news .new-left,
+.news .new-right {
+  height: 300px;
+  position: relative;
+  display: inline-block;
+}
+.news .img {
+  position: absolute;
+}
+.news .new-left {
+  margin-right: 20px;
+  width: 574px;
+}
+
+.news .new-left .img {
+  right: 0;
+}
+
+.news .new-right {
+  width: 582px;
+}
+
+.news .new-right .img {
+  left: 0;
+}
+
+.news .new-summary {
+  margin-top: 216px;
+  color: #7d81b9;
+  font-size: 12px;
+}
+
+.news .new-summary p {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.news .new-summary .time {
+  margin-left: -5px;
+}
+
+.news .new-summary .line {
+  margin-left: 18px;
+  margin-right: 35px;
+  width: 40px;
+  height: 1px;
+  background-color: #7d81b9;
+}
+
+.news .new-summary .new-title {
+  font-size: 16px;
+}
+.news .new-summary .preview {
+  margin-top: 23px;
+  line-height: 22px;
+  margin-left: 161px;
+}
+
+.profile {
+  margin-top: 213px;
+}
+
+.profile .picture {
+  margin-top: 81px;
+  background: url(../images/company_intro.png) no-repeat center center;
+  height: 483px;
+  position: relative;
+}
+
+.profile .picture .text {
+  position: absolute;
+  top: 407px;
+  left: 420px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #fff;
+  width: 687px;
+  text-align: center;
+}

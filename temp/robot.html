@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>梵天科技</title>
+  <script src="http://lib.baomitu.com/jquery/1.12.4/jquery.min.js"></script>
+  <!-- <link href="http://lib.baomitu.com/animate.css/3.5.2/animate.min.css" rel="stylesheet"> -->
+  <link href="css/common.css" rel="stylesheet">
+  <link href="css/vr-robot.css" rel="stylesheet">
+  <script src="slide.js"></script>
+</head>
+
+<body>
+  <nav>
+    <a href="javascript:;" class="nav-a" data-target="">VR游戏</a>
+    <a href="javascript:;" class="nav-a" data-target="ai">智能机器人</a>
+    <a href="javascript:;" class="nav-a" data-target="footer">联系我们</a>
+  </nav>
+  <main class="width-1200">
+    <div class="robot-wrap">
+      <img class="J_robotDots dots-bg" src="images/dots_net.png" alt="">
+      <div class="J_robotMask mask">
+        <img class="J_robot robot-img " src="images/shine_robot.png" alt="">
+      </div>
+    </div>
+    <div class="content-wrap ai">
+      <div class="title">
+        <div class="fz sprite title-blue">
+          INTELLIGENT TECHNOLOGY
+          <p class="ch">人工智能</p>
+        </div>
+      </div>
+      <div class="intro">
+        智能机器人之所以叫智能机器人，这是因为它有相当发达的“大脑”。在脑中起作用的是中央处理器，这种计算机跟操作它的人有直接的联系,正 因为这样，我们才说这种机器人才是真正的机器人，尽管它们的外表可能有所不同。
+      </div>
+      <div class="illustrate">
+        <div class="right-text">
+          <p class="cn-tt">人工智能</p>
+          <p class="en-tt">Artificial intelligence</p>
+          <p class="wtf-class">从智能到智慧，人工智能 开启新时代</p>
+        </div>
+        <div class="left-text">
+          <p class="cn-tt">引领未来</p>
+          <p class="en-tt">lead the future</p>
+          <p class="wtf-class">未来时代就是科技创新时代</p>
+        </div>
+      </div>
+    </div>
+    <div class="content-wrap phone">
+      <div class="title">
+        <div class="fz sprite title-blue">
+          INTELLIGENT TECHNOLOGY
+          <p class="ch">机器人技术</p>
+        </div>
+      </div>
+      <div class="intro">
+        随着社会发展的需要和机器人应用领域的扩大,人们对智能机器人的要求也越来越高。智能机器人所处的环境往往是未知的、难以预测的 ,在研究 这类机器人的过程中,主要涉及到多传感器信息融合、导航与定位、路径规划、机器人视觉、智能控制和人机接口技术
+      </div>
+      <div class="phone-video">
+        <img class="phone-video-img" src="images/phone_video_bg.png" alt="">
+        <div class="video-box">
+
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="contact">
+      <div class="en-text"></div>
+      <p class="text">联系我们</p>
+      <div class="qrocde"></div>
+    </div>
+    <div class="sub">
+      关注
+      <div class="three-way">
+        <a class="weibo" href="javascirpt:;"></a>
+        <a class="wechat" href="javascirpt:;"></a>
+        <a class="qq" href="javascirpt:;"></a>
+      </div>
+    </div>
+    <div class="company-info">
+      深圳梵天数字科技有限公司
+      <p class="line line1">
+        <span class="line-left">
+          电话：029-82123685
+        </span>
+        地址：陕西省西安市 高新区锦业路 西港雅苑 · 3212室
+      </p>
+      <p class="line line2">
+        <span class="line-left">
+          手机：01359562312
+        </span>
+        邮编：100026
+      </p>
+      <p class="line line3">
+        <span class="line-left">
+          邮箱：fantasia@fthudong.net
+        </span>
+        传真：029- 82123685
+      </p>
+    </div>
+    <p class="copyright">
+      Copyright © 2006-2015 Zenith. All Rights Reserved. 深圳梵天数字科技有限公司　版权所有
+    </p>
+  </footer>
+  <div class="bg bg1"></div>
+  <div class="bg bg2"></div>
+  <div class="bg bg3"></div>
+  <div class="bg bg4"></div>
+  <div class="bg bg5"></div>
+</body>
+<script>
+  $(function () {
+    $('.J_robotMask').css({
+      display: 'inline-block',
+    }).animate({
+      opacity: 1,
+    }, 1000, function () {
+      $('.J_robotDots').fadeIn(3000)
+    });
+    // $('.J_robot').slideDown(1000, function () {
+    //   $('.J_robotDots').fadeIn(3000)
+    // });
+  });
+</script>
+
+</html>
