@@ -6,13 +6,13 @@ const main = require("com/main/main.ejs");
 const html = require('./index.html');
 
 // 进行路由匹配
-  $("#app").html(header);
+  $("body").html(header);
   new Promise((res, rej) => {
     setTimeout(() => res(), 2000);
   }).then(() => {
-    $("#app").append(main({ css: mainCss, data: "ajax data" }));
+    $("body").append(main({ css: mainCss, data: "ajax data" }));
   });
-  $('#app').append(html);
+  $('body').append(html);
   // $("body").on("click", "h1", function() {
   //   $(this).css({ backgroundColor: "yellow" });
   // });

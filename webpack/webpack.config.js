@@ -3,12 +3,22 @@ const webpack = require("webpack");
 const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const DefinePlugin = require("webpack/lib/DefinePlugin");
-const autoWebPlugin = require("./config/webpack.entry.js");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+// const autoWebPlugin = require("./config/webpack.entry.js");
+// const { WebPlugin } = require("web-webpack-plugin");
+
+// const entry = new WebPlugin({
+//   template: './app/template.html',
+//   filename:
+// })
 
 module.exports = {
   devtool: "eval-source-map",
   context: path.resolve(__dirname, "app"),
-  entry: autoWebPlugin.entry({}),
+  entry: {
+    index: "./pages/index/index.js"
+  },
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "[name]_[chunkhash:8].js"
@@ -22,16 +32,28 @@ module.exports = {
     inline: true //实时刷新
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "manifest",
-      minChunks: Infinity
+    new HtmlWebpackPlugin({
+      options: {
+        title: "index1212",
+        // chunks: ["common", "index"],
+        template: "./index.html",
+        filename: "../public/index.html"
+      }
     }),
     new ExtractTextPlugin({
       filename: `[name]_[contenthash:8].css` // 给输出的 CSS 文件名称加上 hash 值
     }),
     new DefinePlugin({
-      // 定义 NODE_ENV 环境变量为 production 去除 react 代码中的开发时才需要的部分
       ENV: JSON.stringify("dev")
+    }),
+    // new webpack.HashedModuleIdsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ["common", "runtime"],
+      minChunks: Infinity
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "manifest",
+      minChunks: Infinity
     })
   ],
   externals: {
