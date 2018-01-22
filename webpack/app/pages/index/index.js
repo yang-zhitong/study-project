@@ -1,4 +1,5 @@
 require("./index.css");
+
 const header = require("../../components/header/header.js");
 
 const mainCss = require("com/main/main.css");

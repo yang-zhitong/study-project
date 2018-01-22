@@ -14,13 +14,15 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // })
 
 module.exports = {
-  devtool: "eval-source-map",
+  // devtool: "eval-source-map",
   context: path.resolve(__dirname, "app"),
   entry: {
-    index: "./pages/index/index.js"
+    index: "./pages/index/index.js",
+    login: "./pages/login/index.js"
   },
   output: {
     path: path.resolve(__dirname, "public"),
+    chunkFilename: "[name]_[chunkhash:8].js",
     filename: "[name]_[chunkhash:8].js"
   },
   resolve: require("./config/webpack.resolve.js"),
@@ -32,25 +34,25 @@ module.exports = {
     inline: true //实时刷新
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      options: {
-        title: "index1212",
-        // chunks: ["common", "index"],
-        template: "./index.html",
-        filename: "../public/index.html"
-      }
-    }),
+    // new HtmlWebpackPlugin({
+    //   options: {
+    //     title: "index1212",
+    //     // chunks: ["common", "index"],
+    //     template: "./index.html",
+    //     filename: "../public/index.html"
+    //   }
+    // }),
     new ExtractTextPlugin({
       filename: `[name]_[contenthash:8].css` // 给输出的 CSS 文件名称加上 hash 值
     }),
-    new DefinePlugin({
-      ENV: JSON.stringify("dev")
-    }),
-    // new webpack.HashedModuleIdsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ["common", "runtime"],
-      minChunks: Infinity
-    }),
+    // new DefinePlugin({
+    //   ENV: JSON.stringify("dev")
+    // }),
+    // // new webpack.HashedModuleIdsPlugin(),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   names: ["common", "runtime"],
+    //   minChunks: Infinity
+    // }),
     new webpack.optimize.CommonsChunkPlugin({
       name: "manifest",
       minChunks: Infinity
