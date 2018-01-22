@@ -11,7 +11,7 @@ const html = require('./index.html');
   new Promise((res, rej) => {
     setTimeout(() => res(), 2000);
   }).then(() => {
-    $("body").append(main({ css: mainCss, data: "ajax data" }));
+    $("body").append(main({ css: mainCss, data: "ajax data?" }));
   });
   $('body').append(html);
   // $("body").on("click", "h1", function() {
