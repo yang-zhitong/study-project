@@ -33,16 +33,19 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.estate .video.v1 {
+.estate .video.v1,
+.estate .video.v4 {
   width: 272px;
 }
 
-.estate .video.v3 {
+.estate .video.v3,
+.estate .video.v6 {
   width: 268px;
   margin-left: 1px;
 }
 
-.estate .video.v2 {
+.estate .video.v2,
+.estate .video.v5 {
   margin: 0 1px 1px 1px;
   width: 266px;
 }
@@ -51,6 +54,12 @@
 .estate .video .text,
 .estate .video .sub-text {
   transition: all 1s ease;
+}
+
+.estate .video .img {
+  width: 93px;
+  height: 92px;
+  display: inline-block;
 }
 
 .estate .video:hover > .img {
@@ -75,7 +84,6 @@
 }
 
 .estate .hand {
-  opacity: 0;
   background: url(../images/hand.png) no-repeat;
   height: 615px;
   position: absolute;
@@ -83,15 +91,15 @@
 }
 
 .estate .left-hand {
-  /* left: -107px; */
-  left: 17px;
+  /* left: 7px; */
+  left: 18px;
   width: 240px;
   background-position: 0 0;
 }
 
 .estate .right-hand {
-  right: -4px;
-  /* right: -114px; */
+  right: -5px;
+  /* right: -14px; */
   width: 240px;
   background-position: 100% 0;
 }
@@ -121,7 +129,7 @@
 .estate .video-play-box .preload-img {
   width: 160px;
   height: 160px;
-}  
+}
 
 .estate .video-play-box .preload-cn {
   font-size: 24px;
@@ -131,7 +139,7 @@
 
 .estate .video-play-box .preload-en {
   font-size: 14px;
-}  
+}
 
 .estate .video-play-box .text {
   font-size: 16px;
@@ -144,4 +152,4 @@
   color: #fff;
   text-align: left;
   text-indent: 25px;
-}  
+}

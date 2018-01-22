@@ -56,26 +56,19 @@ footer {
   position: relative;
 }
 
-.robot-wrap .mask {
-  width: 837px;
-  height: 957px;
-  overflow: hidden;
-  position: relative;
+.robot-wrap img {
+  display: inline-block;
+}
+
+.robot-wrap .robto-img {
   margin-left: -70px;
   margin-top: -10px;
-  z-index: 2;
-  opacity: 0;
-}
-.robot-wrap .robot-img {
-  max-width: 100%;
 }
 
 .robot-wrap .dots-bg {
-  z-index: 1;
   position: absolute;
   bottom: -140px;
   left: -360px;
-  display: none;
 }
 
 .ai {

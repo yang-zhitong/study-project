@@ -1,0 +1,24 @@
+<ul class="ul-techs">
+  <% data.forEach(function(it, index){ %>
+    <% if (index % 2 === 0) { %>
+    <li class="one-page">
+      <div class="one-tech">
+        <a href="./vr.html" target="_blank">
+          <img src="<%= it.pic %>" alt="" class="img-bg">
+        </a>
+        <p class="intro"><%= it.title %></p>
+        <p class="sub-intro pf"><%= it.content %></p>
+      </div>
+      <% if (data[index+1]) { %>      
+      <div class="one-tech">
+        <a href="./robot.html" target="_blank">
+          <img src="<%= data[index+1].pic %>" alt="" class="img-bg">
+        </a>
+        <p class="intro"><%= data[index+1].title%></p>
+        <p class="sub-intro pf"><%= data[index+1].content %></p>
+      </div>
+      <% }%>    
+    </li>
+    <% }%>    
+  <% }) %>
+</ul>

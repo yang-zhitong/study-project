@@ -89,7 +89,7 @@ img {
 
 body {
   overflow: hidden;
-  min-width: 1180px;
+  min-width: 1200px;
   position: relative;
 }
 
@@ -97,12 +97,11 @@ body {
   box-sizing: border-box;
 }
 
-.width-1180 {
-  z-index: 10;
-  width: 1180px;
-  margin: 0 auto;
+.content-wrap {
+  width: 1200px;
   position: relative;
 }
+
 .width-1200 {
   z-index: 10;
   width: 1200px;
@@ -191,9 +190,11 @@ img[src=""] {
   color: #fff;
 }
 
-nav {
+.nav {
   position: fixed;
-  width: 186px;
+  /* width: 186px; */
+  width: 116px;
+  white-space: nowrap;
   height: 438px;
   padding-top: 69px;
   padding-left: 12px;
@@ -215,6 +216,7 @@ nav {
 }
 .nav-a:hover,
 .nav-a.current {
+  font-size: 20px;
   font-weight: 600;
 }
 
@@ -233,7 +235,7 @@ footer .en-text {
 }
 
 footer .three-way {
-  margin-top: 94px;  
+  margin-top: 94px;
   background-position: -114px -0px;
   height: 32px;
   width: 121px;
@@ -253,7 +255,7 @@ footer .three-way a {
 }
 footer .three-way .qq {
   margin-right: 0;
-}  
+}
 footer .contact {
   width: 114px;
   height: 181px;
@@ -311,5 +313,55 @@ footer .copyright {
   font-size: 12px;
   text-align: center;
   margin-top: 82px;
-  color: #5d5a9f;  
+  color: #5d5a9f;
+}
+
+.unslider {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+.unslider-wrap {
+  position: relative;
+}
+.unslider-wrap.unslider-carousel > li {
+  float: left;
+}
+.unslider-vertical > ul {
+  height: 100%;
+}
+.unslider-vertical li {
+  float: none;
+  width: 100%;
+}
+.unslider-fade {
+  position: relative;
+}
+.unslider-fade .unslider-wrap li {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 8;
+}
+.unslider-fade .unslider-wrap li.unslider-active {
+  z-index: 10;
+}
+.unslider li,
+.unslider ol,
+.unslider ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.unslider-arrow {
+  position: absolute;
+  left: 20px;
+  z-index: 2;
+  cursor: pointer;
+}
+.unslider-arrow.next {
+  left: auto;
+  right: 20px;
 }

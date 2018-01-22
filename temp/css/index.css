@@ -1,29 +1,35 @@
+@import "./estate.css";
+@import "./tech.css";
+@import "./communities.css";
+@import "./partner.css";
+
 .bg1 {
   top: 0;
-  background-image: url(../images/index_bg1.jpg);
+  background-image: url(../images/index_bg1_min.jpg);
 }
 .bg2 {
-  top: 857px;  
+  top: 857px;
   background-image: url(../images/index_bg2.jpg);
 }
 .bg3 {
-  top: 1714px;  
+  top: 1714px;
   background-image: url(../images/index_bg3.jpg);
 }
 .bg4 {
-  top: 2571px;    
-  background-image: url(../images/index_bg4.jpg);
+  top: 2571px;
+  background-image: url(../images/index_bg4_min.jpg);
 }
 .bg5 {
-  top: 3428px;    
+  top: 3428px;
   background-image: url(../images/index_bg5.jpg);
 }
 .bg6 {
-  top: 4285px;    
+  top: 4285px;
   background-image: url(../images/index_bg6.jpg);
 }
 .bg7 {
-  top: 5142px;    
+  top: 5142px;
+  height: 868px;
   background-image: url(../images/index_bg7.jpg);
 }
 .bg {
@@ -36,17 +42,5 @@
   left: 0;
 }
 footer {
-  margin: 212px auto 0 auto;  
+  margin: 212px auto 0 auto;
 }
-.content-wrap {
-  position: relative;
-}
-
-@import './estate.css';
-@import './tech.css';
-@import './communities.css';
-@import './partner.css';
-
-
-
-

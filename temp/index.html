@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- 用在360中 -->
+  <meta name="renderer" content="webkit">
+  <!-- 用在其它 -->
+  <meta name="force-rendering" content="webkit">
+  <!-- 针对 IE 浏览器 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- 针对百度搜索 -->
+  <meta http-equiv="Cache-Control" content="no-transform">
+
   <title>梵天科技</title>
+  <meta name="description" content="深圳梵天数字科技有限公司">
+  <meta name="keywords" content="深圳梵天数字科技有限公司, 西安市西港雅苑">
+
   <script src="http://lib.baomitu.com/jquery/1.12.4/jquery.min.js"></script>
-  <!-- <link href="http://lib.baomitu.com/animate.css/3.5.2/animate.min.css" rel="stylesheet"> -->
-  <link href="css/common.css" rel="stylesheet">
-  <link href="css/index.css" rel="stylesheet">
-  <script src="slide.js"></script>
+  <script src="http://lib.baomitu.com/unslider/2.0.3/js/unslider-min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="http://lib.baomitu.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <![endif]-->
 </head>
 
 <body>
-  <nav>
+  <div class="bg bg1"></div>
+  <div class="bg bg2"></div>
+  <nav class="nav">
     <a href="javascript:;" class="nav-a" data-target="estate">智慧地产</a>
     <a href="javascript:;" class="nav-a" data-target="tech">智能科技</a>
     <a href="javascript:;" class="nav-a" data-target="communities">公司案例</a>
@@ -23,316 +38,118 @@
     <a href="javascript:;" class="nav-a" data-target="profile">公司简介</a>
     <a href="javascript:;" class="nav-a" data-target="footer">联系我们</a>
   </nav>
-  <main class="width-1200">
-    <!-- 智慧地产 -->
-    <div class="content-wrap estate">
-      <div class="title">
-        <div class="fz sprite title-orange">
-          WISDOM REAL ESTATE
-          <p class="ch">智慧地产</p>
-        </div>
-      </div>
-
-      <div class="black-ipad">
-        <ul class="videos pf J_videosPlay">
-          <li class="video v1">
-            <img class="img" src="./images/video_img1.png" alt="">
-            <p class="text">地产互动</p>
-            <p class="sub-text">Real estate interaction</p>
-          </li>
-          <li class="video v2">
-            <img class="img" src="./images/video_img2.png" alt="">
-            <p class="text">地产互动</p>
-            <p class="sub-text">Real estate interaction</p>
-          </li>
-          <li class="video v3">
-            <img class="img" src="./images/video_img3.png" alt="">
-            <p class="text">地产互动</p>
-            <p class="sub-text">Real estate interaction</p>
-          </li>
-          <li class="video v1">
-            <img class="img" src="./images/video_img4.png" alt="">
-            <p class="text">地产互动</p>
-            <p class="sub-text">Real estate interaction</p>
-          </li>
-          <li class="video v2">
-            <img class="img" src="./images/video_img5.png" alt="">
-            <p class="text">地产互动</p>
-            <p class="sub-text">Real estate interaction</p>
-          </li>
-          <li class="video v3">
-            <img class="img" src="./images/video_img6.png" alt="">
-            <p class="text">地产互动</p>
-            <p class="sub-text">Real estate interaction</p>
-          </li>
-        </ul>
-      </div>
-      <div class="hand left-hand"></div>
-      <div class="hand right-hand"></div>
-      <div class="video-play-box J_videoBox">
-        <div class="preload">
-          <img src="" alt="">
-          <p class="preload-cn">地产互动</p>
-          <p class="preload-en">Real estate interaction</p>
-        </div>
-        <embed class="embed" src="" allowFullScreen="true" quality="high" width="100%" height="690px" align="middle" allowScriptAccess="always"
-          type="application/x-shockwave-flash"></embed>
-        <div class="text">
-          三维动画软件在计算机中首先建立一个虚拟的世界，设计师在这个虚拟的三维世界中按照要表现的对象的形状尺寸建立模型以及场景，再根据要求设定模型的运动轨迹、虚拟摄影机的运动和其它动画参数，最后按要求为模型赋上特定的材质，并打上灯光。当这一切完成后就可以让计算机自动运算，生成最后的画面。
-        </div>
-      </div>
-    </div>
-    <!-- 智慧地产end -->
-
-    <!-- 智能科技 -->
-    <div class="content-wrap tech">
-      <div class="title">
-        <div class="fz sprite title-blue">
-          INTELLIGENT TECHNOLOGY
-          <p class="ch">智能科技</p>
-        </div>
-      </div>
-      <div class="slide-techs J_slideTechs">
-        <a href="javascript:;" class="slide-btn prev">
-          &lt;</a>
-        <a href="javascript:;" class="slide-btn next">&gt;</a>
-        <ul class="ul-techs">
-          <li class="one-tech">
-            <a href="./vr.html">
-              <img src="images/vr_bg.png" alt="" class="img-bg">
-            </a>
-            <p class="intro">VR游戏</p>
-            <p class="sub-intro pf">虚拟现实技术是一种可以创建和体验虚拟世界的计算机仿真系统</p>
-          </li>
-          <li class="one-tech">
-            <a href="./robot.html">
-              <img src="images/robot_bg.png" alt="" class="img-bg">
-            </a>
-            <p class="intro">智能机器人</p>
-            <p class="sub-intro pf">虚拟现实技术是一种可以创建和体验虚拟世界的计算机仿真系统</p>
-          </li>
-          <li class="one-tech">
-            <a href="./vr.html">
-              <img src="images/vr_bg.png" alt="" class="img-bg">
-            </a>
-            <p class="intro">VR游戏</p>
-            <p class="sub-intro pf">虚拟现实技术是一种可以创建和体验虚拟世界的计算机仿真系统</p>
-          </li>
-          <li class="one-tech">
-            <a href="./vr.html">
-              <img src="images/robot_bg.png" alt="" class="img-bg">
-            </a>
-            <p class="intro">VR游戏</p>
-            <p class="sub-intro pf">虚拟现实技术是一种可以创建和体验虚拟世界的计算机仿真系统</p>
-          </li>
-        </ul>
-        <ul class="circles">
-        </ul>
-      </div>
-    </div>
-    <!-- 智能科技 end-->
-    <!-- 看房案例 -->
-    <div class="content-wrap communities">
-      <div class="title">
-        <div class="fz sprite title-purple">
-          COMPANY'S CASE
-          <p class="ch">公司案例</p>
-        </div>
-      </div>
-      <div class="text">
-        <div class="slide-pics J_slidePics">
-          <div class="pics-wrap">
+  <main>
+    <div class="width-1200">
+      <!-- 智慧地产 -->
+      <div class="content-wrap estate">
+        <div class="title">
+          <div class="fz sprite title-orange">
+            WISDOM REAL ESTATE
+            <p class="ch">智慧地产</p>
           </div>
         </div>
-        <p class="area-title">IPAD看房</p>
-        <p class="area-name">力高御景湾</p>
-        <p class="area-intro">
-          防守打法发件拉克丝就是浪费空间的复健科的范德萨累死了放假发 减肥开始老师的看见了科技付了款就是放假了了发电机放假发发发 防守打法发件拉克丝就是浪费空间的复健科的范德萨累死了放假发 减肥开始老师的看见了科技付了款就是放假了了发电机放假发发发 防守打法发件拉克丝就是浪费空间的复健科的范德萨累死了放假发
-          减肥开始老师的看见了
-        </p>
-      </div>
-      <div class="slide J_slideThumbnails">
-        <a href="javascript:;" class="sprite arrow-left  prev"></a>
-        <a href="javascript:;" class="sprite arrow-right  next"></a>
-        <ul class="thumbnails">
-          <li class="one-page">
-            <div class="figure f1">
-              <a class="figure-img">
-                <img src="images/test.jpg" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-            <div class="figure f2">
-              <a class="figure-img">
-                <img src="http://placehold.it/500x500/09f/fff.png" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-            <div class="figure f3">
-              <a class="figure-img">
-                <img src="http://placehold.it/500x500/da8637/fff.png" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-            <div class="figure f4">
-              <a class="figure-img">
-                <img src="http://placehold.it/500x500/396d86/fff.png" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-            <div class="figure f5">
-              <a class="figure-img">
-                <img src="http://placehold.it/500x500/b5ac34/fff.png" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-          </li>
-          <li class="one-page">
-            <div class="figure f1">
-              <a class="figure-img">
-                <img src="images/test.jpg" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-            <div class="figure f2">
-              <a class="figure-img">
-                <img src="http://placehold.it/500x500/da8637/fff.png" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-            <div class="figure f3">
-              <a class="figure-img">
-                <img src="http://placehold.it/500x500/09f/fff.png" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-            <div class="figure f4">
-              <a class="figure-img">
-                <img src="http://placehold.it/500x500/b5ac34/fff.png" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-            <div class="figure f5">
-              <a class="figure-img">
-                <img src="http://placehold.it/500x500/396d86/fff.png" alt="">
-              </a>
-              <p class="caption">
-                西安院子
-              </p>
-              <p class="en-caption">XXXXXX</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!-- 看房案例end -->
-
-    <!-- 合作企业 -->
-    <div class="content-wrap partner-company">
-      <div class="title">
-        <div class="fz sprite title-purple">
-          JOINT VENTURE
-          <p class="ch">合作企业</p>
+        <div class="black-ipad">
+          <ul class="videos pf J_videosPlay">
+          </ul>
         </div>
-      </div>
-      <div class="partners">
-        <a class="partner-logo logo1">
-          <img src="images/logo1.png" alt="">
-        </a>
-        <a class="partner-logo logo2">
-          <img src="images/logo2.png" alt="">
-        </a>
-        <a class="partner-logo logo3">
-          <img src="images/logo1.png" alt="">
-        </a>
-        <a class="partner-logo logo4">
-          <img src="images/logo1.png" alt="">
-        </a>
-      </div>
-    </div>
-    <!-- 合作企业end -->
-
-    <!-- 公司新闻 -->
-    <div class="content-wrap news">
-      <div class="title">
-        <div class="fz sprite title-orange">
-          COMPANY NEWS
-          <p class="ch">公司新闻</p>
+        <div class="hand left-hand"></div>
+        <div class="hand right-hand"></div>
+        <div class="video-play-box J_videoBox">
+          <div class="preload">
+          </div>
+          <embed class="embed" src="" allowFullScreen="true" quality="high" width="100%" height="690px" align="middle" allowScriptAccess="always"
+            type="application/x-shockwave-flash"></embed>
+          <p class="text">
+            三维动画软件在计算机中首先建立一个虚拟的世界，设计师在这个虚拟的三维世界中按照要表现的对象的形状尺寸建立模型以及场景，再根据要求设定模型的运动轨迹、虚拟摄影机的运动和其它动画参数，最后按要求为模型赋上特定的材质，并打上灯光。当这一切完成后就可以让计算机自动运算，生成最后的画面。
+          </p>
         </div>
+
       </div>
-      <div class="show-news">
-        <div class="new-left">
-          <a href="./news.html">
-            <img src="images/new_left.png" alt="" class="img">
-          </a>
-          <div class="new-summary">
-            <p class="time">2017-08-06</p>
-            <p class="line"></p>
-            <p class="new-title">7月3日梵天科技有限公司</p>
-            <p class="preview">
-              公司成立于2004年，多年的互动领域经验为客户提供全方位品牌解决之道 ，致力于新兴的互动创意途径和...
-            </p>
+      <!-- 智慧地产end -->
+
+      <!-- 智能科技 -->
+      <div class="content-wrap tech">
+        <div class="title">
+          <div class="fz sprite title-blue">
+            INTELLIGENT TECHNOLOGY
+            <p class="ch">智能科技</p>
           </div>
         </div>
-        <div class="new-right">
-          <a href="./news.html">
-            <img src="images/new_right.png" alt="" class="img">
-          </a>
-          <div class="new-summary">
-            <p class="time">2017-08-06</p>
-            <p class="line"></p>
-            <p class="new-title">7月3日梵天科技有限公司</p>
-            <p class="preview">
-              公司成立于2004年，多年的互动领域经验为客户提供全方位品牌解决之道 ，致力于新兴的互动创意途径和...
-            </p>
+        <div class="slide-techs J_slideTechs">
+        </div>
+      </div>
+      <!-- 智能科技 end-->
+
+      <!-- 看房案例 -->
+      <div class="content-wrap communities">
+        <div class="title">
+          <div class="fz sprite title-purple">
+            COMPANY'S CASE
+            <p class="ch">公司案例</p>
+          </div>
+        </div>
+        <div class="text lozad" data-background-image="./images/white_ipad.png">
+          <div class="J_slidePics">
+            <div class="slide-pics">
+              <ul class="pics-wrap"></ul>
+            </div>
+          </div>
+          <p class="area-title">IPAD看房</p>
+          <p class="area-name">力高御景湾</p>
+          <p class="area-intro">
+            防守打法发件拉克丝就是浪费空间的复健科的范德萨累死了放假发 减肥开始老师的看见了科技付了款就是放假了了发电机放假发发发 防守打法发件拉克丝就是浪费空间的复健科的范德萨累死了放假发 减肥开始老师的看见了科技付了款就是放假了了发电机放假发发发 防守打法发件拉克丝就是浪费空间的复健科的范德萨累死了放假发
+            减肥开始老师的看见了
+          </p>
+        </div>
+        <div class="slide-wrap">
+          <div class="J_slideThumbnails">
           </div>
         </div>
       </div>
-    </div>
-    <!-- 公司新闻end -->
+      <!-- 看房案例end -->
 
-    <!-- 公司简介 -->
-    <div class="content-wrap profile">
-      <div class="title">
-        <div class="fz sprite title-blue">
-          COMPANY PROFILE
-          <p class="ch">公司简介</p>
+      <!-- 合作企业 -->
+      <div class="content-wrap partner-company">
+        <div class="title">
+          <div class="fz sprite title-purple">
+            JOINT VENTURE
+            <p class="ch">合作企业</p>
+          </div>
+        </div>
+        <div class="partners J_partner lozad" data-background-image="images/friend_com.png">
         </div>
       </div>
-      <div class="picture">
-        <p class="text">
-          以IPAD平板电脑触控应用、环幕或弧幕展示互动触控载体展示、三维动画、增强现实U3D、虚幻等多种全方位的营销手段为客户量身打造一套属于自己的互动体验系统。
-        </p>
+      <!-- 合作企业end -->
+
+      <!-- 公司新闻 -->
+      <div class="content-wrap news">
+        <div class="title">
+          <div class="fz sprite title-orange">
+            COMPANY NEWS
+            <p class="ch">公司新闻</p>
+          </div>
+        </div>
+        <div class="show-news J_showNews">
+        </div>
       </div>
+      <!-- 公司新闻end -->
+
+      <!-- 公司简介 -->
+      <div class="content-wrap profile">
+        <div class="title">
+          <div class="fz sprite title-blue">
+            COMPANY PROFILE
+            <p class="ch">公司简介</p>
+          </div>
+        </div>
+        <div class="picture lozad" data-background-image="images/company_intro.png">
+          <p class="text J_profileContent">
+            以IPAD平板电脑触控应用、环幕或弧幕展示互动触控载体展示、三维动画、增强现实U3D、虚幻等多种全方位的营销手段为客户量身打造一套属于自己的互动体验系统。
+          </p>
+        </div>
+      </div>
+      <!-- 公司简介end -->
     </div>
-    <!-- 公司简介end -->
 
   </main>
   <footer class="footer">
@@ -349,7 +166,7 @@
         <a class="qq" href="javascirpt:;"></a>
       </div>
     </div>
-    <div class="company-info">
+    <div class="company-info J_footerInfo">
       深圳梵天数字科技有限公司
       <p class="line line1">
         <span class="line-left">
@@ -374,14 +191,40 @@
       Copyright © 2006-2015 Zenith. All Rights Reserved. 深圳梵天数字科技有限公司　版权所有
     </p>
   </footer>
-  <div class="bg bg1"></div>
-  <div class="bg bg2"></div>
+
   <div class="bg bg3"></div>
   <div class="bg bg4"></div>
   <div class="bg bg5"></div>
   <div class="bg bg6"></div>
   <div class="bg bg7"></div>
+  <script>
+    $(function () {
+      $("nav").on("click", ".nav-a", function () {
+        var target = $(this).data("target");
+        if (target.indexOf("html") != -1) {
+          window.location.href = target;
+        } else {
+          var offset = $("." + target).offset().top || 0;
+          $("body,html")
+            .stop()
+            .animate({
+              scrollTop: offset
+            }, 1000);
+        }
+      });
+
+      function timeFormat(phpT) {
+        var dateObj = new Date(phpT * 1000),
+          month = dateObj.getMonth() + 1,
+          year = dateObj.getFullYear(),
+          day = dateObj.getDate();
+        if (month < 10) month = "0" + month;
+        return year + "-" + month + "-" + day;
+      }
+
+      window.timeFormat = timeFormat;
+    });
+  </script>
 </body>
-<script src="index.js"></script>
 
 </html>

@@ -1,119 +1,37 @@
-$(function () {
-  $(".left-hand").animate({
-    // left: "17px",
-    opacity: 1
-  }, 2000);
-  $(".right-hand").animate({
-    // right: "-4px",
-    opacity: 1
-  }, 2000);
+require('./css/common.css')
+require('./css/index.css')
+const $ = require('jquery');
 
-  $("nav").on("click", ".nav-a", function () {
-    var offset = $("." + $(this).data("target")).offset().top || 0;
-    $("body,html")
-      .stop()
-      .animate({
-        scrollTop: offset
-      }, 1000);
-  });
+const templates = {
+  estate: require('./src/estate.ejs'),
+}
 
-  $(".J_slideTechs").slide({
-    titCell: ".circles",
-    mainCell: ".ul-techs",
-    autoPage: true,
-    effect: "left",
-    autoPlay: false,
-    scroll: 2,
-    vis: 2,
-    trigger: "click"
-  });
+const urls = {
+  estate: "http://106.15.94.31/fantistic/index.php/Home/index/wisdom",
+}
 
-  $(".J_slideThumbnails").slide({
-    mainCell: ".thumbnails",
-    autoPage: true,
-    trigger: "click",
-    delayTime: 700
-  });
+const urlsKeys = Object.keys(urls)
 
-  $(".J_slideThumbnails").on("click", ".figure-img", function () {
-    var $this = $(this),
-      src = $this.find("img").attr("src"),
-      $figure = $this.parent(),
-      $clone = $figure.clone().addClass("flying");
+const hookClass = {
+  estate: function (content) {
+    $(".J_videosPlay").html(content);
+    estateEvent();
+  },
+}
 
-    $clone.appendTo($figure.parent()).animate({
-        top: "-340px",
-        left: "-150px",
-        opcatity: 0.4
-      },
-      function () {
-        $clone.remove();
-        picScale(src);
-      }
-    );
-  });
-
-  function picScale(src) {
-    $(".pics-wrap")
-      .attr("style", "")
-      .html('<img src="' + src + '">')
-      .css({
-        display: "block",
-        borderRadius: 0
-      })
-      .animate({
-          width: "100%",
-          height: "100%"
-        },
-        1000,
-        function () {
-          picSlide();
-        }
-      );
-  }
-
-  function picSlide() {
-    var srcs = [
-      "http://placehold.it/500x500/09f/fff.png",
-      "http://placehold.it/500x500/da8637/fff.png",
-      "http://placehold.it/500x500/396d86/fff.png",
-      "http://placehold.it/500x500/b5ac34/fff.png"
-    ];
-    var $pics = $(".J_slidePics");
-    $pics.find(".pics-wrap").html("");
-    $.each(srcs, function (index, item) {
-      $pics.find(".pics-wrap").append($("<img>").attr("src", item));
-    });
-    // $(".J_slidePics").slide({ mainCell: ".pics-wrap", autoPlay: true });
-    if (picSlide.repeat) clearTimeout(picSlide.repeat);
-    helpPicSlide(0, $pics.find("img"));
-  }
-
-  function helpPicSlide(index, $pics) {
-    if ($pics.length === 0) return false;
-    if (index >= $pics.length) {
-      index = 0;
-    }
-    $pics
-      .eq(index)
-      .fadeIn(1000)
-      .siblings()
-      .fadeOut();
-    index++;
-    picSlide.repeat = setTimeout(function () {
-      helpPicSlide(index, $pics);
-    }, 3000);
-  }
-
-  $(".J_slideThumbnails .figure-img")
-    .eq(0)
-    .trigger("click");
-
+function estateEvent() {
+  // 视频播放
   $(".J_videosPlay").on("click", ".video", function () {
     var $this = $(this),
       $videoBox = $(".J_videoBox"),
       $parent = $this.parents(".black-ipad");
-    var tmp = `http://player.video.qiyi.com/4179962cd710dae014f468e0585d404f/0/0/v_19rrewjxew.swf-albumId=902484100-tvId=902484100-isPurchase=0-cnId=6`;
+    var tmp =
+      "http://player.video.qiyi.com/4179962cd710dae014f468e0585d404f/0/0/v_19rrewjxew.swf-albumId=902484100-tvId=902484100-isPurchase=0-cnId=6";
+    var data = {
+      src: $this.find('img').attr('src'),
+      cn: $this.find('.text').text(),
+      en: $this.find('.sub-text').text(),
+    };
     var queue = [
       function (next) {
         $parent.siblings(".left-hand").animate({
@@ -132,7 +50,7 @@ $(function () {
         });
       },
       function (next) {
-        $videoBox.find("img").attr("src", $this.find("img").attr("src"));
+        $videoBox.find('.preload').html('<img src="' + data.src + '" class="preload-img"><p class="preload-cn">' + data.cn + '</p><p class="preload-en">' + data.en + '</p>');
         $videoBox.fadeIn(1000, function () {
           $videoBox
             .find(".preload")
@@ -147,11 +65,32 @@ $(function () {
     ];
     $(document).queue("videoAni", queue);
     $(document).dequeue("videoAni");
-  });
+    $(".nav-a")
+      .eq(0)
+      .text("返回首页")
+      .one("click", function () {
+        window.location.href = window.location.href;
+      });
+  })
+}
 
-  // $('.J_robot').show();
-  // $('.J_robotDot').animate({
-  //   width: '1920px',
-  //   left: '-360px'
-  // })
-});
+function renderInOrder(index) {
+  const keyName = urlsKeys[index];
+  index++;
+  $.get(urls[keyName])
+    .done(function (data) {
+      if (data.code == 10000) {
+        hookClass[keyName](templates[keyName](data))
+        if (keyName === "profile") $(".J_profileContent").text(data.content); // 公司简介单独拿出来的
+        renderInOrder(index);
+      }
+    })
+    .fail(function (err) {
+      if (err.code == 10000) {
+        hookClass[it](ejs.render(templates[it], data));
+        renderInOrder(index);
+      }
+    })
+}
+
+renderInOrder(0);
