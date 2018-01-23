@@ -94,3 +94,13 @@ function renderInOrder(index) {
 }
 
 renderInOrder(0);
+
+function loadImg(url) {
+  var img = new Image();
+  img.onload = function () {
+    $('.bg1').css('background-image', 'url("'+img.src+'")');
+  };
+  img.src = url;
+}
+loadImg(require('./images/index_bg1.jpg'));
+loadImg(require('./images/index_bg4.jpg'));

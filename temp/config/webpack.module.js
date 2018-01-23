@@ -1,6 +1,7 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const rules = [{
+const rules = [
+  {
     test: /(\.jsx|\.js)$/,
     use: {
       loader: "babel-loader"
@@ -16,21 +17,24 @@ const rules = [{
     loader: "ejs-loader"
   },
   {
-    test: /\.(gif|png|jpe?g|eot|woff|ttf|svg|pdf)$/,
-    use: [{
-      loader: "file-loader",
-      options: {
-        limit: '8000',
-        name: '[name].[ext]',
+    test: /\.(png|jpg|gif)$/,
+    use: [
+      {
+        loader: "url-loader",
+        options: {
+          limit: 8192,
+          name: "[name].[ext]"
+        }
       }
-    }]
-  }
+    ]
+  },
 ];
 const proRule = {
   test: /\.css$/,
   use: ExtractTextPlugin.extract({
     fallback: "style-loader",
-    use: [{
+    use: [
+      {
         loader: "css-loader",
         options: {
           minimize: true
@@ -47,10 +51,11 @@ const devRule = {
   test: /\.css$/,
   use: ExtractTextPlugin.extract({
     fallback: "style-loader",
-    use: [{
+    use: [
+      {
         loader: "css-loader",
         options: {
-          minimize: true,
+          minimize: true
         }
       },
       {
@@ -60,7 +65,7 @@ const devRule = {
   })
 };
 
-module.exports = function (isDev) {
+module.exports = function(isDev) {
   isDev ? rules.push(devRule) : rules.push(proRule);
   return {
     rules
