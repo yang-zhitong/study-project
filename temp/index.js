@@ -1,22 +1,116 @@
+// 引入第二个域名加载图片资源, 同时控制的加载顺序
 require('./css/common.css')
 require('./css/index.css')
 const $ = require('jquery');
 
 const templates = {
   estate: require('./src/estate.ejs'),
+  techs: require('./src/techs.ejs'),
+  communities: require('./src/communities.ejs'),
+  partner: require('./src/partner.ejs'),
+  news: require('./src/news.ejs'),
 }
 
 const urls = {
   estate: "http://106.15.94.31/fantistic/index.php/Home/index/wisdom",
+  techs: "http://106.15.94.31/fantistic/index.php/Home/index/technology",
+  communities: "http://106.15.94.31/fantistic/index.php/Home/index/cases",
+  partner: "http://106.15.94.31/fantistic/index.php/Home/index/enterprise",
+  news: "http://106.15.94.31/fantistic/index.php/Home/index/news"
 }
 
 const urlsKeys = Object.keys(urls)
 
 const hookClass = {
-  estate: function (content) {
-    $(".J_videosPlay").html(content);
+  estate: function (keyName, data) {
+    $(".J_videosPlay").html(templates[keyName](data));
     estateEvent();
   },
+  techs: function (keyName, data) {
+    $(".J_slideTechs").html(templates[keyName](data));
+    $(".J_slideTechs").unslider({
+      arrows: {
+        prev: '<a class="unslider-arrow prev">&lt;</a>',
+        next: '<a class="unslider-arrow next">&gt;</a>'
+      }
+    });
+  },
+  communities: function (keyName, data) {
+    window.commuData = data.data;
+    var $thumbnails = $(".J_slideThumbnails");
+    $thumbnails.html(templates[keyName](data));
+    $thumbnails.unslider({
+      animation: "fade",
+      arrows: {
+        prev: '<a class="sprite arrow-left prev">&lt;</a>',
+        next: '<a class="sprite arrow-right next">&gt;</a>'
+      }
+    });
+    $thumbnails.css({
+      overflow: "visible"
+    });
+
+    $thumbnails.on("click", ".figure-img", function () {
+      $(".J_slidePics").html(
+        '<div class="slide-pics "><ul class="pics-wrap"></ul></div>'
+      );
+      var $this = $(this),
+        parentIndex = $this.data('parentindex'),
+        childIndex = $this.data('childindex'),
+        src = $this.find("img").attr("src"),
+        $figure = $this.parent(),
+        $clone = $figure.clone().addClass("flying");
+
+      $clone.appendTo($figure.parent()).animate({
+          top: "-340px",
+          left: "-80px",
+          opcatity: 0.4
+        },
+        function () {
+          $clone.remove();
+          fadeText(parentIndex, childIndex);
+          $(".pics-wrap")
+            .html('<img src="' + src + '">')
+            .css({
+              display: "block",
+              borderRadius: 0
+            })
+            .animate({
+                width: "100%",
+                height: "100%"
+              },
+              1000,
+              function () {
+                picSlide(parentIndex, childIndex)
+              },
+            );
+        }
+      );
+    });
+
+    // 触发
+    $(".J_slideThumbnails .figure-img")
+      .eq(0)
+      .trigger("click");
+  },
+  partner: function (keyName, data) {
+    $(".J_partner").html(templates[keyName](data));
+    $(".J_logo").hover(
+      function () {
+        $(this).addClass("rotateIn");
+      },
+      function () {
+        $(this).removeClass("rotateIn");
+      }
+    );
+  },
+  news: function (keyName, data) {
+    $(".J_showNews").html(templates[keyName](data));    
+  },
+  profile: function (content) {
+    $(".J_footerInfo").html(content);
+    $(".J_profileContent").text(data.content); // 公司简介单独拿出来的
+  }
 }
 
 function estateEvent() {
@@ -76,18 +170,18 @@ function estateEvent() {
 
 function renderInOrder(index) {
   const keyName = urlsKeys[index];
+  if (!keyName) return false;
   index++;
   $.get(urls[keyName])
     .done(function (data) {
       if (data.code == 10000) {
-        hookClass[keyName](templates[keyName](data))
-        if (keyName === "profile") $(".J_profileContent").text(data.content); // 公司简介单独拿出来的
+        hookClass[keyName](keyName, data);
         renderInOrder(index);
       }
     })
     .fail(function (err) {
       if (err.code == 10000) {
-        hookClass[it](ejs.render(templates[it], data));
+        hookClass[keyName](keyname, data);
         renderInOrder(index);
       }
     })
@@ -95,12 +189,64 @@ function renderInOrder(index) {
 
 renderInOrder(0);
 
-function loadImg(url) {
+const imgs = {
+  bg1: require('./images/index_bg1.jpg'),
+  bg4: require('./images/index_bg4.jpg'),
+  J_whiteIpad: require('./images/white_ipad.png'),
+  bg5: require('./images/index_bg5.jpg'),
+  bg6: require('./images/index_bg6.jpg'),
+  J_partner: require('./images/friend_com.png'),
+  J_profilePic: require('./images/company_intro.png'),
+  bg7: require('./images/index_bg7.jpg'),
+}
+Object.keys(imgs).forEach(function (it) {
+  loadImg(it, imgs[it]);
+});
+
+function loadImg(selector, url) {
   var img = new Image();
+  console.log(selector, url);
   img.onload = function () {
-    $('.bg1').css('background-image', 'url("'+img.src+'")');
+    $('.' + selector).css('background-image', 'url("' + img.src + '")');
   };
   img.src = url;
 }
-loadImg(require('./images/index_bg1.jpg'));
-loadImg(require('./images/index_bg4.jpg'));
+
+// 飞之前替换文字 
+function fadeText(pi, ci) {
+  var $texts = $('.J_whiteIpad'),
+    cData = window.commuData[pi][ci];
+  $texts.find('.area-title').text(cData.title);
+  $texts.find('.area-name').fadeOut(function () {
+    $(this).text(cData.name);
+  }).delay(500).fadeIn()
+  $texts.find('.area-intro').fadeOut(function () {
+    $(this).text(cData.content);
+  }).delay(500).fadeIn();
+}
+// 点击小球飞的动画
+function picScale(src, cb) {
+
+}
+
+// ipad看房轮播
+function picSlide(pi, ci) {
+  var srcs = [
+    "http://placehold.it/500x500/09f/fff.png",
+    "http://placehold.it/500x500/da8637/fff.png",
+    "http://placehold.it/500x500/396d86/fff.png",
+    "http://placehold.it/500x500/b5ac34/fff.png"
+  ];
+  var tmpHtml = "",
+    $pics = $(".J_slidePics");
+  $.each(srcs, function (index, item) {
+    tmpHtml += '<li><img src="' + item + '"</li>';
+  });
+
+  $pics.find(".pics-wrap").html(tmpHtml);
+  $pics.find(".slide-pics").unslider({
+    animation: "fade",
+    autoplay: true,
+    arrows: false
+  });
+}

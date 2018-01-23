@@ -45,10 +45,10 @@
   top: 410px;
 }
 
-.partner-company .partner-logo img:hover {
+/* .partner-company .partner-logo img:hover {
   transform: rotateY(360deg);
   transition: transform 1.5s ease;
-}
+} */
 
 .news {
   margin-top: 93px;

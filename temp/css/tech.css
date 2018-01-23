@@ -119,7 +119,6 @@
 
 .tech .unslider-nav .unslider-active {
   background: #29b8fc;
-  /* #1a81f5 */
   background: -prefix-linear-zgradient(top, #29b8fc, #1a81f5);
   background: linear-gradient(to bottom, #29b8fc, #1a81f5);
 }
@@ -143,7 +142,6 @@
 
 .tech .circles li.on {
   background: #29b8fc;
-  /* #1a81f5 */
   background: -prefix-linear-zgradient(top, #29b8fc, #1a81f5);
   background: linear-gradient(to bottom, #29b8fc, #1a81f5);
 }

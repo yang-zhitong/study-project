@@ -22,7 +22,7 @@ const rules = [
       {
         loader: "url-loader",
         options: {
-          limit: 8192,
+          limit: 16000,
           name: "[name].[ext]"
         }
       }

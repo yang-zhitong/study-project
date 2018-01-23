@@ -26,13 +26,13 @@ module.exports = {
     new ExtractTextPlugin({
       filename: `[name].css` // 给输出的 CSS 文件名称加上 hash 值
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      minChunks: Infinity
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'common',
+    //   minChunks: Infinity
+    // }),
     new HtmlWebpackPlugin({
       template: "./index.html",
-      filename: "./index_build.html"
+      filename: "./index.html"
     }),
     new DefinePlugin({
       ENV: JSON.stringify("dev")
