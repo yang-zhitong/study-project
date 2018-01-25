@@ -6,9 +6,7 @@ const rules = [{
     use: {
       loader: "babel-loader",
       options: {
-        query: {
-          presets: ['es2015']
-        }
+        presets: ["@babel/preset-env"]
       }
     },
     exclude: /node_modules/

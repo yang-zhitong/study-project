@@ -8,31 +8,41 @@ require("./css/partner.css");
 
 const $ = require("jquery");
 
-const templates = {
-  estate: require("./src/estate.ejs"),
-  techs: require("./src/techs.ejs"),
-  communities: require("./src/communities.ejs"),
-  partner: require("./src/partner.ejs"),
-  news: require("./src/news.ejs")
-};
+const ajaxLoad = [{
+    name: 'estate',
+    template: require("./src/estate.ejs"),
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/wisdom",
+  },
+  {
+    name: 'techs',
+    template: require("./src/techs.ejs"),
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/technology",
+  },
+  {
+    name: 'communities',
+    template: require("./src/communities.ejs"),
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/cases",
+  },
+  {
+    name: 'partner',
+    template: require("./src/partner.ejs"),
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/enterprise",
+  },
+  {
+    name: 'news',
+    template: require("./src/news.ejs"),
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/news"
+  }
+];
 
-const urls = {
-  estate: "http://106.15.94.31/fantistic/index.php/Home/index/wisdom",
-  techs: "http://106.15.94.31/fantistic/index.php/Home/index/technology",
-  communities: "http://106.15.94.31/fantistic/index.php/Home/index/cases",
-  partner: "http://106.15.94.31/fantistic/index.php/Home/index/enterprise",
-  news: "http://106.15.94.31/fantistic/index.php/Home/index/news"
-};
-
-const urlsKeys = Object.keys(urls);
 
 const hookClass = {
-  estate: function(keyName, data) {
-    $(".J_videosPlay").html(templates[keyName](data));
+  estate: function (temp, data) {
+    $(".J_videosPlay").html(temp(data));
     estateEvent();
   },
-  techs: function(keyName, data) {
-    $(".J_slideTechs").html(templates[keyName](data));
+  techs: function (temp, data) {
+    $(".J_slideTechs").html(temp(data));
     $(".J_slideTechs").unslider({
       arrows: {
         prev: '<a class="unslider-arrow prev">&lt;</a>',
@@ -40,89 +50,60 @@ const hookClass = {
       }
     });
   },
-  communities: function(keyName, data) {
+  communities: function (temp, data) {
     window.commuData = data.data;
-    var $thumbnails = $(".J_slideThumbnails");
-    $thumbnails.html(templates[keyName](data));
-    $thumbnails.unslider({
-      animation: "fade",
-      arrows: {
-        prev: '<a class="sprite arrow-left prev">&lt;</a>',
-        next: '<a class="sprite arrow-right next">&gt;</a>'
-      }
-    });
-    $thumbnails.css({
-      overflow: "visible"
-    });
-
-    $thumbnails.on("click", ".figure-img", function() {
-      $(".J_slidePics").html(
-        '<div class="slide-pics "><ul class="pics-wrap"></ul></div>'
-      );
-      var $this = $(this),
-        parentIndex = $this.data("parentindex"),
-        childIndex = $this.data("childindex"),
-        src = $this.find("img").attr("src"),
-        $figure = $this.parent(),
-        $clone = $figure.clone().addClass("flying");
-
-      $clone.appendTo($figure.parent()).animate(
-        {
-          top: "-340px",
-          left: "-80px",
-          opcatity: 0.4
-        },
-        function() {
-          $clone.remove();
-          fadeText(parentIndex, childIndex);
-          $(".pics-wrap")
-            .html('<img src="' + src + '">')
-            .css({
-              display: "block",
-              borderRadius: 0
-            })
-            .animate(
-              {
-                width: "100%",
-                height: "100%"
-              },
-              1000,
-              function() {
-                picSlide(parentIndex, childIndex);
-              }
-            );
-        }
-      );
-    });
-
-    // 触发
-    $(".J_slideThumbnails .figure-img")
-      .eq(0)
-      .trigger("click");
+    $(".J_slideThumbnails").html(temp(data));
+    commuEvent();
   },
-  partner: function(keyName, data) {
-    $(".J_partner").html(templates[keyName](data));
+  partner: function (temp, data) {
+    $(".J_partner").html(temp(data));
     $(".J_logo").hover(
-      function() {
+      function () {
         $(this).addClass("rotateIn");
       },
-      function() {
+      function () {
         $(this).removeClass("rotateIn");
       }
     );
   },
-  news: function(keyName, data) {
-    $(".J_showNews").html(templates[keyName](data));
+  news: function (temp, data) {
+    $(".J_showNews").html(temp(data));
   },
-  profile: function(content) {
-    $(".J_footerInfo").html(content);
+  profile: function (temp, data) {
+    $(".J_footerInfo").html(temp(data));
     $(".J_profileContent").text(data.content); // 公司简介单独拿出来的
   }
 };
 
+function renderInOrder(index) {
+  if (!ajaxLoad[index]) return false;
+  const {
+    url,
+    template,
+    name
+  } = ajaxLoad[index];
+  index++;
+  $.get(url)
+    .done(function (data) {
+      if (data.code == 10000) {
+        hookClass[name](template, data);
+        renderInOrder(index);
+      }
+    })
+    .fail(function (err) {
+      if (err.code == 10000) {
+        hookClass[name](template, data);
+        renderInOrder(index);
+      }
+    });
+}
+
+renderInOrder(0);
+
+
 function estateEvent() {
   // 视频播放
-  $(".J_videosPlay").on("click", ".video", function() {
+  $(".J_videosPlay").on("click", ".video", function () {
     var $this = $(this),
       $videoBox = $(".J_videoBox"),
       $parent = $this.parents(".black-ipad");
@@ -134,7 +115,7 @@ function estateEvent() {
       en: $this.find(".sub-text").text()
     };
     var queue = [
-      function(next) {
+      function (next) {
         $parent.siblings(".left-hand").animate({
           left: "-200px",
           opacity: 0
@@ -145,24 +126,24 @@ function estateEvent() {
         });
         next();
       },
-      function(next) {
-        $parent.fadeOut(1000, function() {
+      function (next) {
+        $parent.fadeOut(1000, function () {
           next();
         });
       },
-      function(next) {
+      function (next) {
         $videoBox
           .find(".preload")
           .html(
             '<img src="' +
-              data.src +
-              '" class="preload-img"><p class="preload-cn">' +
-              data.cn +
-              '</p><p class="preload-en">' +
-              data.en +
-              "</p>"
+            data.src +
+            '" class="preload-img"><p class="preload-cn">' +
+            data.cn +
+            '</p><p class="preload-en">' +
+            data.en +
+            "</p>"
           );
-        $videoBox.fadeIn(1000, function() {
+        $videoBox.fadeIn(1000, function () {
           $videoBox
             .find(".preload")
             .hide()
@@ -179,36 +160,71 @@ function estateEvent() {
     $(".nav-a")
       .eq(0)
       .text("返回首页")
-      .one("click", function() {
+      .one("click", function () {
         window.location.href = window.location.href;
       });
   });
 }
 
-function renderInOrder(index) {
-  const keyName = urlsKeys[index];
-  if (!keyName) return false;
-  index++;
-  $.get(urls[keyName])
-    .done(function(data) {
-      if (data.code == 10000) {
-        hookClass[keyName](keyName, data);
-        renderInOrder(index);
+function commuEvent() {
+  var $thumbnails = $(".J_slideThumbnails");
+  $thumbnails.unslider({
+    animation: "fade",
+    arrows: {
+      prev: '<a class="sprite arrow-left prev">&lt;</a>',
+      next: '<a class="sprite arrow-right next">&gt;</a>'
+    }
+  });
+  $thumbnails.css({
+    overflow: "visible"
+  });
+
+  $thumbnails.on("click", ".figure-img", function () {
+    $(".J_slidePics").html(
+      '<div class="slide-pics "><ul class="pics-wrap"></ul></div>'
+    );
+    var $this = $(this),
+      parentIndex = $this.data("parentindex"),
+      childIndex = $this.data("childindex"),
+      src = $this.find("img").attr("src"),
+      $figure = $this.parent(),
+      $clone = $figure.clone().addClass("flying");
+
+    $clone.appendTo($figure.parent()).animate({
+        top: "-340px",
+        left: "-80px",
+        opcatity: 0.4
+      },
+      function () {
+        $clone.remove();
+        fadeText(parentIndex, childIndex);
+        $(".pics-wrap")
+          .html('<img src="' + src + '">')
+          .css({
+            display: "block",
+            borderRadius: 0
+          })
+          .animate({
+              width: "100%",
+              height: "100%"
+            },
+            1000,
+            function () {
+              picSlide(parentIndex, childIndex);
+            }
+          );
       }
-    })
-    .fail(function(err) {
-      if (err.code == 10000) {
-        hookClass[keyName](keyname, data);
-        renderInOrder(index);
-      }
-    });
+    );
+  });
+
+  // 触发
+  $(".J_slideThumbnails .figure-img")
+    .eq(0)
+    .trigger("click");
 }
 
-renderInOrder(0);
-
 const imgsArr = [
-  [
-    {
+  [{
       selector: "J_whiteIpad",
       url: require("./images/white_ipad.png")
     },
@@ -221,8 +237,7 @@ const imgsArr = [
       url: require("./images/index_bg1.jpg")
     }
   ],
-  [
-    {
+  [{
       selector: "bg4",
       url: require("./images/index_bg4.jpg")
     },
@@ -243,11 +258,11 @@ const imgsArr = [
 
 function imgsArrLoop(parentIndex) {
   if (!imgsArr[parentIndex]) return false;
-  imgsArr[parentIndex].forEach(function(oneImg, childIndex) {
+  imgsArr[parentIndex].forEach(function (oneImg, childIndex) {
     var img = new Image(),
       selector = imgObj.selector,
       url = imgObj.url;
-    img.onload = function() {
+    img.onload = function () {
       $("." + selector).css("background-image", 'url("' + img.src + '")');
       if (childIndex === imgsArr[parentIndex].length - 1) {
         parentIndex++;
@@ -267,14 +282,14 @@ function fadeText(pi, ci) {
   $texts.find(".area-title").text(cData.title);
   $texts
     .find(".area-name")
-    .fadeOut(function() {
+    .fadeOut(function () {
       $(this).text(cData.name);
     })
     .delay(500)
     .fadeIn();
   $texts
     .find(".area-intro")
-    .fadeOut(function() {
+    .fadeOut(function () {
       $(this).text(cData.content);
     })
     .delay(500)
@@ -291,7 +306,7 @@ function picSlide(pi, ci) {
   ];
   var tmpHtml = "",
     $pics = $(".J_slidePics");
-  $.each(srcs, function(index, item) {
+  $.each(srcs, function (index, item) {
     tmpHtml += '<li><img src="' + item + '"</li>';
   });
 
