@@ -172,6 +172,35 @@
     walk(tree.firstElementChild);
   };
 
+  function sleep(ms) {
+    return new Promise((res, rej) => {
+      setTimeout(() => {
+        res('wake');
+      }, ms)
+    });
+  }
+
+
+
+  function co(it) {
+    var func = it();
+    function runner(result) {
+      if (result.done) {
+        return result.value;
+      }
+      return result.value.then(function (resolve) {
+        runner(it.next()); //resolve之后调用
+      }, function (reject) {
+        throw new Error('useless error');
+      });
+    }
+    runner(func);
+  }
+  co(function* gen() {
+    console.log(1);
+    yield sleep(3000);
+    console.log(2);
+  });
   // generator 方法
 
   // function* preOrder(node) {

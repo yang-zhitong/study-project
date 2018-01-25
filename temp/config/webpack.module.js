@@ -1,10 +1,15 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const autoprefixer = require('autoprefixer');
 
-const rules = [
-  {
+const rules = [{
     test: /(\.jsx|\.js)$/,
     use: {
-      loader: "babel-loader"
+      loader: "babel-loader",
+      options: {
+        query: {
+          presets: ['es2015']
+        }
+      }
     },
     exclude: /node_modules/
   },
@@ -18,23 +23,20 @@ const rules = [
   },
   {
     test: /\.(png|jpg|gif)$/,
-    use: [
-      {
-        loader: "url-loader",
-        options: {
-          limit: 16000,
-          name: "[name].[ext]"
-        }
+    use: [{
+      loader: "url-loader",
+      options: {
+        limit: 18000,
+        name: "[name].[ext]"
       }
-    ]
+    }]
   },
 ];
 const proRule = {
   test: /\.css$/,
   use: ExtractTextPlugin.extract({
     fallback: "style-loader",
-    use: [
-      {
+    use: [{
         loader: "css-loader",
         options: {
           minimize: true
@@ -51,21 +53,25 @@ const devRule = {
   test: /\.css$/,
   use: ExtractTextPlugin.extract({
     fallback: "style-loader",
-    use: [
-      {
+    use: [{
         loader: "css-loader",
         options: {
           minimize: true
         }
       },
       {
-        loader: "postcss-loader"
+        loader: "postcss-loader",
+        options: {
+          plugins: () => [autoprefixer({
+            browsers: ["Last 3 versions"]
+          })],
+        }
       }
     ]
   })
 };
 
-module.exports = function(isDev) {
+module.exports = function (isDev) {
   isDev ? rules.push(devRule) : rules.push(proRule);
   return {
     rules

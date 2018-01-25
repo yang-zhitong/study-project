@@ -60,7 +60,6 @@
 
 .tech .one-tech {
   float: left;
-  /* width: 541px !important; */
   width: 540px;
   height: 330px;
   position: relative;
@@ -70,9 +69,6 @@
   margin-right: 18px;    
 }
 
-/* .tech .one-tech:first-child {
-  margin-right: 18px;  
-}   */
 .tech .one-tech .img-bg {
   position: absolute;
   left: 0;

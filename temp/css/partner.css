@@ -7,7 +7,7 @@
   height: 370px;
   width: 988px;
   margin: 81px auto 0 auto;
-  /* background-image: url(../images/friend_com.png); */
+  background-image: url(../images/friend_com.png);
   background-repeat: no-repeat;
   background-position: center top;
 }
@@ -26,7 +26,7 @@
 }
 
 .partner-company .logo1 {
-  left: 233px;
+  left: 234px;
   top: 305px;
 }
 
@@ -36,7 +36,7 @@
 }
 
 .partner-company .logo3 {
-  left: 602px;
+  left: 603px;
   top: 305px;
 }
 
