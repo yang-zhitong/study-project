@@ -2,17 +2,146 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>叶福林的简历</title>
-    <link rel="stylesheet" type="text/css" href="https://necolas.github.io/normalize.css/4.1.1/normalize.css">
+    <title></title>
+    <link href="http://lib.baomitu.com/normalize/7.0.0/normalize.min.css" rel="stylesheet">
     <link href="http://lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resume-css/main.css">
     <style>
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "微软雅黑", Helvetica, "微软雅黑", Arial, sans-serif;
+            font-size: 14px;
+            line-height: 18px;
+            color: #737373;
+            margin: 30px 13px 30px 13px;
+        }
+
+        p {
+            margin-bottom: 9px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #404040;
+            line-height: 36px;
+        }
+
+        h1 {
+            margin-bottom: 18px;
+            font-size: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        h3 {
+            margin-bottom: 9px;
+            font-size: 18px;
+        }
+
+        h4 {
+            font-size: 16px;
+        }
+
+        h5 {
+            font-size: 14px;
+        }
+
+        h6 {
+            font-size: 13px;
+        }
+
+        hr {
+            margin: 0 0 19px;
+            border: 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        blockquote {
+            padding: 13px 13px 21px 15px;
+            margin-bottom: 0px;
+            font-family: georgia, serif;
+            font-style: italic;
+        }
+
+        blockquote:before {
+            font-size: 40px;
+            margin-left: -10px;
+            font-family: georgia, serif;
+            color: #eee;
+        }
+
+        blockquote p {
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 18px;
+            margin-bottom: 0;
+            font-style: italic;
+        }
+
+        @media screen and (min-width: 768px) {
+            body {
+                width: 748px;
+                margin: 30px auto;
+            }
+        }
+
+        ul,
+        ol {
+            margin-top: 4px;
+        }
+
+        h3 span,
+        h4 span {
+            padding-left: 6px;
+        }
+
+        #xueli {
+            padding: 10 10 6 15;
+        }
+
+        footer {
+            text-align: center;
+        }
+
+        .nolist {
+            list-style: none;
+        }
+
+        .nolist li span {
+            padding-left: 6px;
+        }
+
+        hr {
+            margin: 0 0 8;
+        }
+
         .spec {
             padding-left: 0;
             list-style: none;
             display: inline-block;
-            vertical-align: top;
+            vertical-align: -90px;
+            width: 521px;
+            margin-left: -6px;
         }
+        .spec li {
+            white-space: nowrap;
+        }        
     </style>
 </head>
 
@@ -34,7 +163,7 @@
         </p>
         <p>
             <i class="fa fa-github fa-lg" aria-hidden="true"></i>
-            <span style='padding-left:5px;'>https://github.com/yang-zhitong</span>
+            <a href="https://github.com/yang-zhitong" style='color:#737373;padding-left:5px;text-decoration:none;'>github.com/yang-zhitong</a>
         </p>
     </blockquote>
     <hr>
@@ -63,11 +192,18 @@
         </li>
         <li>
             <i class="fa fa-keyboard-o" aria-hidden="true"></i>
-            <span>工作内容：</span>            
+            <span style="margin-left:-2px;">工作内容：pc端为主的需求迭代维护, 微信H5的制作</span>
+        </li>
+        <li>
+            <i class="fa fa-level-up" aria-hidden="true"></i>
+            <span style="margin-left:5px;">相关成长：</span>
             <ul class="spec">
-                <li>pc端项目中几个频道的需求迭代与维护, 日常活动页的切图制作, 兼容IE8+</li>
-                <li>和团队一起从express+glup的传统技术栈重构至koa+webpack打包多页应用的工程方案, 做到了利用hash进行每个文件的缓存控制, 合理使用服务器端渲染和浏览器渲染, 极大提高网站性能</li>
-                <li>微信端使用vue+webpack+vux组件库进行快速开发</li>
+                <li>对前端技术工具迭代有足够的认识，乐于尝试新技术</li>
+                <li>和团队一起从express+glup的传统技术栈重构至koa+webpack多页应用的工程方案</li>
+                <li>解决了静态资源版本控制问题，从时间戳到contentHash，极大优化了网站性能</li>
+                <li>独立封装项目中部分功能模块，如文件上传保存工具，字符串工具</li>
+                <li>开发逐渐规范，CSS模块，普通Cookie到Jwt，RESTful API引入等</li>
+                <li>微信端则是vue+webpack+vux组件库进行快速开发</li>
             </ul>
         </li>
     </ul>
@@ -88,30 +224,40 @@
             </em>
         </li>
     </ul>
-    <ul class="nolist">
-        <li>
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <span>CET6, 快速的英文阅读能力</span>
-        </li>
-        <li>
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <span>自学编程与CS相关知识</span>
-        </li>
-    </ul>
     <hr>
     <h3>
         <i class="fa fa-bookmark" aria-hidden="true"></i>
         <span>关于我</span>
     </h3>
+    <ul class="nolist">
+        <li>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <span>CET6，英文快速阅读能力</span>
+        </li>
+        <li>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <span>自学编程与CS相关知识</span>
+        </li>
+        <li>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <span>面向对象编程 || 面向源代码 || 面向stackoverflow和github</span>
+        </li>
+    </ul>
+    <hr>
+    <h3>
+        <i class="fa fa-bookmark" aria-hidden="true"></i>
+        <span>技术经历</span>
+    </h3>
     <ol>
-        <li>可以独立搭建一个项目的开发环境, 包括webpack构建, vscode插件, eslint规范等</li>
-        <li>熟悉node服务器端开发, 使用mongo+koa开发公司内部使用项目, 如API平台, 博客等</li>
-        <li>基本的面向对象编程思想, 在日常业务中会大量使用</li>
-        <li>工作中积极进行组内知识分享, code review</li>
-        <li>现正在进行组件的封装,</li>
+        <li>熟悉node服务器端开发，使用mongo+koa开发公司内部使用项目，有API平台，博客等</li>
+        <li>可以独立搭建项目的开发环境，使用脚手架或从0配置webpack，编辑器插件，eslint规则等</li>
+        <li>基本理解数据绑定相关原理，koa实现原理</li>
+        <li>之前与PHP后端对接, 了解PHP部分语言特性</li>
+        <li>工作中喜欢组内知识分享，code review</li>
+        <li>正在学习组件与npm插件的封装, 希望今年能多造轮子</li>
     </ol>
     <hr>
-    <footer>@2018 Yang Zhitong's resume made by Markdown</footer>
+    <footer>Yang Zhitong's resume made by Markdown & Font Awesome</footer>
 </body>
 
 </html>
