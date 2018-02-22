@@ -1,12 +1,12 @@
 .tech {
   margin-top: 130px;
+  height: 491px;
 }
 
 .tech .slide-techs {
-  width: 1118px;
+  width: 1119px;
   margin: 0 auto;
   display: block;
-  /* height: 384px; */
   position: relative;
 }
 

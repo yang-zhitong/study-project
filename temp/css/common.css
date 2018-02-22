@@ -1,5 +1,7 @@
 /*网页基本样式*/
+
 /* 清除内外边距 */
+
 body,
 h1,
 h2,
@@ -10,54 +12,52 @@ h6,
 hr,
 p,
 blockquote,
-/* structural elements 结构元素 */ dl,
+dl,
 dt,
 dd,
 ul,
 ol,
 li,
-/* list elements 列表元素 */ pre,
-/* text formatting elements 文本格式元素 */ fieldset,
+pre,
+fieldset,
 legend,
 button,
 input,
 textarea,
-/* form elements 表单元素 */ th,
+th,
 td {
   margin: 0;
   padding: 0;
 }
 
-/* 设置默认字体 */
 body,
 button,
 input,
 select,
 textarea {
-  /* for ie */ /*font: 12px/1 Tahoma, Helvetica, Arial, "宋体", sans-serif;*/
-  font: 12px/1 Microsoft YaHei, "\5b8b\4f53", Tahoma, Helvetica, Arial,
-    sans-serif; /* 用 ascii 字符表示，使得在任何编码下都无问题 */
+  /* for ie */
+  /*font: 12px/1 Tahoma, Helvetica, Arial, "宋体", sans-serif;*/
+  font: 12px/1 Microsoft YaHei, "\5b8b\4f53", Tahoma, Helvetica, Arial, sans-serif;
 }
+
 ul,
 ol {
   list-style: none;
-} /* 重置文本格式元素 */
+}
+
+/* 重置文本格式元素 */
 
 a {
   text-decoration: none;
   outline: none;
 }
+
 a:hover {
   text-decoration: none;
 }
 
-/* 重置表格元素 */
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
 /* 重置 hr */
+
 hr {
   border: none;
   height: 1px;
@@ -77,6 +77,7 @@ em {
 }
 
 /* 让非ie浏览器默认也显示垂直滚动条，防止因滚动条引起的闪烁 */
+
 html {
   overflow-y: scroll;
 }
@@ -105,8 +106,11 @@ body {
 .width-1200 {
   z-index: 10;
   width: 1200px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
   margin: 0 auto;
-  position: relative;
 }
 
 img[src=""] {
@@ -114,13 +118,11 @@ img[src=""] {
 }
 
 .fz {
-  font-family: "FZLanTingHei-R-GBK", "Myriad Pro", "Hiragino Sans GB",
-    "Microsoft YaHei", sans-serif;
+  font-family: "FZLanTingHei-R-GBK", "Myriad Pro", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
 .pf {
-  font-family: "PingFang SC", "Myriad Pro", "Hiragino Sans GB",
-    "Microsoft YaHei", sans-serif;
+  font-family: "PingFang SC", "Myriad Pro", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
 .sprite.title-green {
@@ -128,21 +130,25 @@ img[src=""] {
   width: 69px;
   background-position: -0px -0px;
 }
+
 .sprite.title-purple {
   height: 111px;
   width: 69px;
   background-position: -0px -111px;
 }
+
 .sprite.title-blue {
   height: 111px;
   width: 69px;
   background-position: -0px -222px;
 }
+
 .sprite.title-green {
   height: 111px;
   width: 69px;
   background-position: -0px -333px;
 }
+
 .sprite.title-orange {
   height: 111px;
   width: 69px;
@@ -192,7 +198,6 @@ img[src=""] {
 
 .nav {
   position: fixed;
-  /* width: 186px; */
   width: 116px;
   white-space: nowrap;
   height: 438px;
@@ -205,19 +210,83 @@ img[src=""] {
 
 .nav-a {
   color: #fff;
+  height: 30px;
   line-height: 30px;
   display: block;
 }
 
-.nav-a::before {
+.nav-a:before {
   content: "-";
   color: #fff;
-  margin-right: 20px;
+  margin-right: 30px;
 }
-.nav-a:hover,
-.nav-a.current {
+
+.nav-a .ov-box {
+  position: relative;
+  overflow: hidden;
+  height: 30px;
+  width: 76px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.nav-a p {
+  position: absolute;
+  line-height: 16px;
+  height: 16px;
+  transition: all 0.5s ease;
+}
+
+.nav-a .en {
+  top: 8px;
+}
+
+.nav-a .cn {
+  font-size: 16px;  
+  left: -70px;
+  top:0;
+}  
+
+.nav-a.current .en,
+.nav-a:hover .en {
+  top: 16px;
+}
+
+.nav-a.current .cn,
+.nav-a:hover .cn {
+  top: 0px;
+  left: 0;
+}  
+
+
+/* .nav-a .en {
+  opacity: 1;
+}
+
+.nav-a:hover > .en,
+.nav-a.current > .en {
+  opacity: 0;
+}
+
+.nav-a .cn {
+  opacity: 0;
+  left: 25px;
+  position: absolute;
   font-size: 20px;
   font-weight: 600;
+}  
+
+.nav-a:hover > .cn,
+.nav-a.current > .cn {
+  opacity: 1;  
+} */
+
+.right-logo {
+  position: absolute;
+  left: 40px;
+  width: 194px;
+  height: 37px;
+  top: -23px;
 }
 
 footer {
@@ -253,9 +322,11 @@ footer .three-way a {
   padding: 16px;
   margin-right: 12px;
 }
+
 footer .three-way .qq {
   margin-right: 0;
 }
+
 footer .contact {
   width: 114px;
   height: 181px;
@@ -292,6 +363,7 @@ footer .sub {
 
 footer .company-info {
   margin-left: 99px;
+  max-width: 650px;
 }
 
 footer .company-info .line {
@@ -299,7 +371,9 @@ footer .company-info .line {
   font-size: 16px;
   height: 16px;
   color: #5d5a9f;
+  white-space: nowrap;
 }
+
 footer .company-info .line-left {
   width: 281px;
   display: inline-block;
@@ -321,22 +395,28 @@ footer .copyright {
   margin: 0;
   padding: 0;
 }
+
 .unslider-wrap {
   position: relative;
 }
-.unslider-wrap.unslider-carousel > li {
+
+.unslider-wrap.unslider-carousel>li {
   float: left;
 }
-.unslider-vertical > ul {
+
+.unslider-vertical>ul {
   height: 100%;
 }
+
 .unslider-vertical li {
   float: none;
   width: 100%;
 }
+
 .unslider-fade {
   position: relative;
 }
+
 .unslider-fade .unslider-wrap li {
   position: absolute;
   left: 0;
@@ -344,9 +424,11 @@ footer .copyright {
   right: 0;
   z-index: 8;
 }
+
 .unslider-fade .unslider-wrap li.unslider-active {
   z-index: 10;
 }
+
 .unslider li,
 .unslider ol,
 .unslider ul {
@@ -355,12 +437,14 @@ footer .copyright {
   padding: 0;
   border: none;
 }
+
 .unslider-arrow {
   position: absolute;
   left: 20px;
   z-index: 2;
   cursor: pointer;
 }
+
 .unslider-arrow.next {
   left: auto;
   right: 20px;

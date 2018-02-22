@@ -1,26 +1,34 @@
 <div class="new-left">
-  <a href="news.html?index=0" target="_blank">
+  <a href="news.html?index=0">
     <img src="<%= data[0].thumbnail %>" alt="" class="img">
   </a>
   <div class="new-summary">
-    <p class="time"><%= timeFormat(data[0].t) %></p>
+    <p class="time">
+      <%= timeFormat(data[0].t) %>
+    </p>
     <p class="line"></p>
-    <p class="new-title"><%= data[0].title %></p>
+    <p class="new-title">
+      <%= data[0].title %>
+    </p>
     <p class="preview">
       <%= data[0].description.slice(0, 50) + '...' %>
     </p>
   </div>
 </div>
 <div class="new-right">
-  <a href="news.html?index=1" target="_blank">
+  <a href="news.html?index=1">
     <img src="<%= data[1].thumbnail %>" alt="" class="img">
   </a>
   <div class="new-summary">
-    <p class="time"><%= timeFormat(data[1].t) %></p>
+    <p class="time">
+      <%= timeFormat(data[1].t) %>
+    </p>
     <p class="line"></p>
-    <p class="new-title"><%= data[1].title %></p>
+    <p class="new-title">
+      <%= data[1].title %>
+    </p>
     <p class="preview">
-       <%= data[1].description.slice(0, 50) + '...' %>
+      <%= data[1].description.slice(0, 50) + '...' %>
     </p>
   </div>
 </div>

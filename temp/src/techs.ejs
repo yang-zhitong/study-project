@@ -3,7 +3,7 @@
     <% if (index % 2 === 0) { %>
     <li class="one-page">
       <div class="one-tech">
-        <a href="./vr.html" target="_blank">
+        <a href="vr-robot.html?type=<%= it.type %>">
           <img src="<%= it.pic %>" alt="" class="img-bg">
         </a>
         <p class="intro"><%= it.title %></p>
@@ -11,7 +11,7 @@
       </div>
       <% if (data[index+1]) { %>      
       <div class="one-tech">
-        <a href="./robot.html" target="_blank">
+        <a href="vr-robot.html?type=<%= it.type %>">
           <img src="<%= data[index+1].pic %>" alt="" class="img-bg">
         </a>
         <p class="intro"><%= data[index+1].title%></p>

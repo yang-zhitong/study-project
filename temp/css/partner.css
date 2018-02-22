@@ -7,7 +7,7 @@
   height: 370px;
   width: 988px;
   margin: 81px auto 0 auto;
-  background-image: url(../images/friend_com.png);
+  background-image: url(../images/images/friend_com.png);
   background-repeat: no-repeat;
   background-position: center top;
 }
@@ -27,31 +27,27 @@
 
 .partner-company .logo1 {
   left: 234px;
-  top: 305px;
+  top: 303px;
 }
 
 .partner-company .logo2 {
   left: 418px;
-  top: 409px;
+  top: 407px;
 }
 
 .partner-company .logo3 {
   left: 603px;
-  top: 305px;
+  top: 303px;
 }
 
 .partner-company .logo4 {
   left: 788px;
-  top: 410px;
+  top: 407px;
 }
-
-/* .partner-company .partner-logo img:hover {
-  transform: rotateY(360deg);
-  transition: transform 1.5s ease;
-} */
 
 .news {
   margin-top: 93px;
+  height: 493px;
 }
 
 .news .show-news {
@@ -121,14 +117,12 @@
 
 .profile {
   margin-top: 213px;
+  height: 688px;
 }
 
 .profile .picture {
   margin-top: 81px;
-  /* background-image: url(../images/company_intro.png); */
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 483px;
+  height: 497px;
   position: relative;
 }
 
@@ -141,6 +135,8 @@
   color: #fff;
   width: 687px;
   text-align: center;
+  height: 70px;
+  overflow: hidden;
 }
 
 .animated {
@@ -148,19 +144,20 @@
   animation-fill-mode: both;
 }
 
-.rotateIn {
-  animation-name: rotateIn;
+.logo-hover:hover > img {
+  animation-name: flipInY;  
 }
 
-@keyframes rotateIn {
+.rotateIn {
+  animation-name: flipInY;
+}
+
+@keyframes flipInY {
   from {
-    transform-origin: center;
-    transform: rotate3d(0, 0, 1, -600deg);
-    opacity: 1;
+    transform: rotateY(0deg);    
   }
+
   to {
-    transform-origin: center;
-    transform: none;
-    opacity: 1;
+    transform: rotateY(360deg);
   }
 }

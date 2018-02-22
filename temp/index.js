@@ -1,4 +1,3 @@
-// 引入第二个域名加载图片资源, 同时控制的加载顺序
 require("./css/common.css");
 require("./css/index.css");
 require("./css/estate.css");
@@ -8,40 +7,105 @@ require("./css/partner.css");
 
 const $ = require("jquery");
 
-const ajaxLoad = [{
-    name: 'estate',
+var elemTops = [];
+var $nava = $(".nav-a");
+
+$nava.each(function() {
+  var target = $(this).data("target");
+  var offset = $("." + target).offset().top || 0;
+  elemTops.push(offset);
+});
+
+$(window).scroll(function(event) {
+  var top = $(window).scrollTop();
+  for (var i = 0; i < elemTops.length; i++) {
+    if (top >= elemTops[i] && top < elemTops[i + 1]) {
+      $nava
+        .eq(i)
+        .addClass("current")
+        .siblings()
+        .removeClass("current");
+    }
+  }
+});
+
+if (!window.console) {
+  window.console = {
+    log: "",
+    dir: "",
+    warn: ""
+  };
+}
+
+$(".nav").on("click", ".nav-a", function(e) {
+  e.preventDefault();
+  $(this)
+    .addClass("current")
+    .siblings()
+    .removeClass("current");
+  var target = $(this).data("target");
+  var offset = $("." + target).offset().top || 0;
+  $("body,html")
+    .stop()
+    .animate(
+      {
+        scrollTop: offset
+      },
+      1000
+    );
+});
+
+function timeFormat(phpT) {
+  var dateObj = new Date(phpT * 1000),
+    month = dateObj.getMonth() + 1,
+    year = dateObj.getFullYear(),
+    day = dateObj.getDate();
+  if (month < 10) month = "0" + month;
+  return year + "-" + month + "-" + day;
+}
+
+window.timeFormat = timeFormat;
+
+const ajaxLoad = [
+  {
+    name: "estate",
     template: require("./src/estate.ejs"),
-    url: "http://106.15.94.31/fantistic/index.php/Home/index/wisdom",
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/wisdom"
   },
   {
-    name: 'techs',
+    name: "techs",
     template: require("./src/techs.ejs"),
-    url: "http://106.15.94.31/fantistic/index.php/Home/index/technology",
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/technology"
   },
   {
-    name: 'communities',
+    name: "communities",
     template: require("./src/communities.ejs"),
-    url: "http://106.15.94.31/fantistic/index.php/Home/index/cases",
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/cases"
   },
   {
-    name: 'partner',
+    name: "partner",
     template: require("./src/partner.ejs"),
-    url: "http://106.15.94.31/fantistic/index.php/Home/index/enterprise",
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/enterprise"
   },
   {
-    name: 'news',
+    name: "news",
     template: require("./src/news.ejs"),
     url: "http://106.15.94.31/fantistic/index.php/Home/index/news"
+  },
+  {
+    name: "footer",
+    template: require("./src/footer.ejs"),
+    url: "http://106.15.94.31/fantistic/index.php/Home/index/companys"
   }
 ];
 
-
 const hookClass = {
-  estate: function (temp, data) {
+  estate: function(temp, data) {
+    window.estateData = data;
     $(".J_videosPlay").html(temp(data));
     estateEvent();
   },
-  techs: function (temp, data) {
+  techs: function(temp, data) {
     $(".J_slideTechs").html(temp(data));
     $(".J_slideTechs").unslider({
       arrows: {
@@ -50,118 +114,97 @@ const hookClass = {
       }
     });
   },
-  communities: function (temp, data) {
+  communities: function(temp, data) {
     window.commuData = data.data;
     $(".J_slideThumbnails").html(temp(data));
     commuEvent();
   },
-  partner: function (temp, data) {
+  partner: function(temp, data) {
     $(".J_partner").html(temp(data));
-    $(".J_logo").hover(
-      function () {
-        $(this).addClass("rotateIn");
-      },
-      function () {
-        $(this).removeClass("rotateIn");
-      }
-    );
+    var $logos = $(".J_logo");
+    $logos.each(function() {
+      var $this = $(this),
+        url = $.trim($this.data("url"));
+      if (url) $this.attr("href", url);
+    });
   },
-  news: function (temp, data) {
+  news: function(temp, data) {
     $(".J_showNews").html(temp(data));
   },
-  profile: function (temp, data) {
+  footer: function(temp, data) {
     $(".J_footerInfo").html(temp(data));
-    $(".J_profileContent").text(data.content); // 公司简介单独拿出来的
+    $(".J_profileContent").text(data.data[0].content); // 公司简介单独拿出来的
   }
 };
 
 function renderInOrder(index) {
   if (!ajaxLoad[index]) return false;
-  const {
-    url,
-    template,
-    name
-  } = ajaxLoad[index];
+  const { url, template, name } = ajaxLoad[index];
   index++;
-  $.get(url)
-    .done(function (data) {
-      if (data.code == 10000) {
-        hookClass[name](template, data);
-        renderInOrder(index);
-      }
-    })
-    .fail(function (err) {
-      if (err.code == 10000) {
-        hookClass[name](template, data);
-        renderInOrder(index);
-      }
-    });
+  $.get(url, function(data) {
+    hookClass[name](template, data);
+    renderInOrder(index);
+  });
 }
 
 renderInOrder(0);
 
-
 function estateEvent() {
   // 视频播放
-  $(".J_videosPlay").on("click", ".video", function () {
+  $(".J_videosPlay").on("click", ".video", function() {
     var $this = $(this),
+      clickData = window.estateData.data[$this.index()],
       $videoBox = $(".J_videoBox"),
+      $preload = $videoBox.find(".preload"),
+      $embed = $videoBox.find(".embed"),
+      $text = $videoBox.find(".text"),
       $parent = $this.parents(".black-ipad");
-    var tmp =
-      "http://player.video.qiyi.com/4179962cd710dae014f468e0585d404f/0/0/v_19rrewjxew.swf-albumId=902484100-tvId=902484100-isPurchase=0-cnId=6";
-    var data = {
-      src: $this.find("img").attr("src"),
-      cn: $this.find(".text").text(),
-      en: $this.find(".sub-text").text()
-    };
+
+    var preloadText =
+      '<img src="' +
+      clickData.picone +
+      '" class="preload-img"><p class="preload-cn">' +
+      clickData.title +
+      '</p><p class="preload-en">' +
+      clickData.english +
+      "</p>";
     var queue = [
-      function (next) {
-        $parent.siblings(".left-hand").animate({
-          left: "-200px",
-          opacity: 0
-        });
-        $parent.siblings(".right-hand").animate({
-          right: "-200px",
-          opacity: 0
-        });
+      function(next) {
+        $parent.siblings(".hand").addClass("far");
         next();
       },
-      function (next) {
-        $parent.fadeOut(1000, function () {
+      function(next) {
+        $parent.fadeOut(1000, function() {
           next();
         });
       },
-      function (next) {
-        $videoBox
-          .find(".preload")
-          .html(
-            '<img src="' +
-            data.src +
-            '" class="preload-img"><p class="preload-cn">' +
-            data.cn +
-            '</p><p class="preload-en">' +
-            data.en +
-            "</p>"
-          );
-        $videoBox.fadeIn(1000, function () {
-          $videoBox
-            .find(".preload")
-            .hide()
-            .siblings(".embed")
-            .attr("src", tmp)
-            .css({
-              display: "block"
-            });
+      function(next) {
+        $embed.removeClass("show").find('embed').remove();
+        $preload.removeClass("hide").html(preloadText);
+        $videoBox.fadeIn(1000, function() {
+          $preload.addClass("hide");
+          $text.text(clickData.content);
+          var embedHtml =
+            '<embed  src="' +
+            clickData.view +
+            '" allowFullScreen="true" quality="high" width="100%" height="690px" align="middle" allowScriptAccess="always"type="application/x-shockwave-flash" />';
+          $embed.addClass("show").append($(embedHtml));
         });
       }
     ];
     $(document).queue("videoAni", queue);
     $(document).dequeue("videoAni");
-    $(".nav-a")
+    $(".nav-a .cn")
       .eq(0)
       .text("返回首页")
-      .one("click", function () {
-        window.location.href = window.location.href;
+      .one("click", function(e) {
+        e.preventDefault();
+        $(this).text("智慧地产");
+        $videoBox.fadeOut(function() {
+          $parent.fadeIn();
+          $parent.siblings(".hand").removeClass("far");
+        });
+        return false;
       });
   });
 }
@@ -179,42 +222,50 @@ function commuEvent() {
     overflow: "visible"
   });
 
-  $thumbnails.on("click", ".figure-img", function () {
-    $(".J_slidePics").html(
-      '<div class="slide-pics "><ul class="pics-wrap"></ul></div>'
-    );
+  $thumbnails.on("click", ".figure-img", function() {
     var $this = $(this),
+      $Jslide = $(".J_slidePics"),
       parentIndex = $this.data("parentindex"),
       childIndex = $this.data("childindex"),
       src = $this.find("img").attr("src"),
       $figure = $this.parent(),
       $clone = $figure.clone().addClass("flying");
 
-    $clone.appendTo($figure.parent()).animate({
-        top: "-340px",
-        left: "-80px",
-        opcatity: 0.4
-      },
-      function () {
-        $clone.remove();
-        fadeText(parentIndex, childIndex);
-        $(".pics-wrap")
-          .html('<img src="' + src + '">')
-          .css({
-            display: "block",
-            borderRadius: 0
-          })
-          .animate({
-              width: "100%",
-              height: "100%"
-            },
-            1000,
-            function () {
-              picSlide(parentIndex, childIndex);
-            }
-          );
-      }
-    );
+    fadeText(parentIndex, childIndex);
+
+    $Jslide
+      .fadeOut(function() {
+        $Jslide.html(
+          '<div class="slide-pics "><ul class="pics-wrap"></ul></div>'
+        );
+        picSlide(parentIndex, childIndex);
+      })
+      .fadeIn();
+
+    // $clone.appendTo($figure.parent()).animate(
+    //   {
+    //     top: "-340px",
+    //     left: "-80px",
+    //     opcatity: 0.4
+    //   },
+    //   function() {
+    //     $clone.remove();
+    //     fadeText(parentIndex, childIndex);
+    //     picSlide(parentIndex, childIndex);
+    //     // $(".pics-wrap")
+    //     //   .html('<img src="' + src + '">')
+    //     //   .addClass("scale")
+    //     //   .animate({
+    //     //       width: "100%",
+    //     //       height: "100%"
+    //     //     },
+    //     //     1000,
+    //     //     function () {
+    //     //       picSlide(parentIndex, childIndex);
+    //     //     }
+    //     //   );
+    // }
+    // );
   });
 
   // 触发
@@ -223,58 +274,6 @@ function commuEvent() {
     .trigger("click");
 }
 
-const imgsArr = [
-  [{
-      selector: "J_whiteIpad",
-      url: require("./images/white_ipad.png")
-    },
-    {
-      selector: "J_profilePic",
-      url: require("./images/company_intro.png")
-    },
-    {
-      selector: "bg1",
-      url: require("./images/index_bg1.jpg")
-    }
-  ],
-  [{
-      selector: "bg4",
-      url: require("./images/index_bg4.jpg")
-    },
-    {
-      selector: "bg5",
-      url: require("./images/index_bg5.jpg")
-    },
-    {
-      selector: "bg6",
-      url: require("./images/index_bg6.jpg")
-    },
-    {
-      selector: "bg7",
-      url: require("./images/index_bg7.jpg")
-    }
-  ]
-];
-
-function imgsArrLoop(parentIndex) {
-  if (!imgsArr[parentIndex]) return false;
-  imgsArr[parentIndex].forEach(function (oneImg, childIndex) {
-    var img = new Image(),
-      selector = imgObj.selector,
-      url = imgObj.url;
-    img.onload = function () {
-      $("." + selector).css("background-image", 'url("' + img.src + '")');
-      if (childIndex === imgsArr[parentIndex].length - 1) {
-        parentIndex++;
-        imgsArrLoop(index);
-      }
-    };
-    img.src = url;
-  });
-}
-
-imgsArrLoop(0);
-
 // 飞之前替换文字
 function fadeText(pi, ci) {
   var $texts = $(".J_whiteIpad"),
@@ -282,14 +281,14 @@ function fadeText(pi, ci) {
   $texts.find(".area-title").text(cData.title);
   $texts
     .find(".area-name")
-    .fadeOut(function () {
+    .fadeOut(function() {
       $(this).text(cData.name);
     })
     .delay(500)
     .fadeIn();
   $texts
     .find(".area-intro")
-    .fadeOut(function () {
+    .fadeOut(function() {
       $(this).text(cData.content);
     })
     .delay(500)
@@ -298,22 +297,64 @@ function fadeText(pi, ci) {
 
 // ipad看房轮播
 function picSlide(pi, ci) {
-  var srcs = [
-    "http://placehold.it/500x500/09f/fff.png",
-    "http://placehold.it/500x500/da8637/fff.png",
-    "http://placehold.it/500x500/396d86/fff.png",
-    "http://placehold.it/500x500/b5ac34/fff.png"
-  ];
+  var srcs = window.commuData[pi][ci].imageL;
   var tmpHtml = "",
     $pics = $(".J_slidePics");
-  $.each(srcs, function (index, item) {
-    tmpHtml += '<li><img src="' + item + '"</li>';
+  $.each(srcs, function(index, item) {
+    tmpHtml += '<li><img src="' + item.image + '"</li>';
   });
 
   $pics.find(".pics-wrap").html(tmpHtml);
-  $pics.find(".slide-pics").unslider({
+  var slider = $pics.find(".slide-pics");
+
+  // slider.on("unslider.ready", function() {
+  //   $pics
+  //     .find(".pics-wrap")
+  //     .addClass("scale")
+  //     .animate({
+  //       opacity: 1,
+  //       width: "100%",
+  //       height: "100%"
+  //     }, 1000);
+  // });
+
+  slider.unslider({
     animation: "fade",
+    speed: 1500,
     autoplay: true,
     arrows: false
   });
 }
+
+const imgsArr = [
+  [
+    {
+      selector: "hand",
+      url: require("./images/hand_sprite.png"),
+      callback: function() {
+        $(".hand").removeClass("far");
+      }
+    }
+  ]
+];
+
+function imgsArrLoop(parentIndex) {
+  if (!imgsArr[parentIndex]) return false;
+  imgsArr[parentIndex].forEach(function(imgObj, childIndex) {
+    var img = new Image(),
+      cb = imgObj.callback,
+      selector = imgObj.selector,
+      url = imgObj.url;
+    img.onload = function() {
+      $("." + selector).css("background-image", 'url("' + img.src + '")');
+      if (cb) cb();
+      if (childIndex === imgsArr[parentIndex].length - 1) {
+        parentIndex++;
+        imgsArrLoop(parentIndex);
+      }
+    };
+    img.src = url;
+  });
+}
+
+imgsArrLoop(0);

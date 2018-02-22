@@ -1,5 +1,5 @@
-<% data.forEach(function(it, index) { %>
-  <a class="J_logo animated partner-logo logo<%= index+1 %>"  href=<%= String(it.url) || "javasciprt:;" %>>
-    <img src="<%= it.logo %>">
+<% data.slice(0, 4).forEach(function(it, index) { %>
+  <a target="_blank" class="J_logo logo-hover partner-logo logo<%= index+1 %>" data-url="<%= it.url %>">
+    <img class="animated" src="<%= it.logo %>">
   </a>
 <% }); %>

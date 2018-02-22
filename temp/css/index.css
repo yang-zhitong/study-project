@@ -1,49 +1,22 @@
-.bg1 {
-  top: 0;
-  background-image: url(http://fantistic.oss-cn-shanghai.aliyuncs.com/pic/index_bg1_min.jpg);
+footer {
+  margin: 230px auto 0 auto;
+  padding-bottom: 0;
 }
 
-.bg2 {
-  top: 857px;
-  background-image: url(http://fantistic.oss-cn-shanghai.aliyuncs.com/pic/index_bg2_min.jpg);
-}
-
-.bg3 {
-  top: 1714px;
-  background-image: url(http://fantistic.oss-cn-shanghai.aliyuncs.com/pic/index_bg3_min.jpg);
-}
-
-.bg4 {
-  top: 2571px;
-  background-image: url(http://fantistic.oss-cn-shanghai.aliyuncs.com/pic/index_bg4_min.jpg);
-}
-
-.bg5 {
-  top: 3428px;
-  background-image: url(http://fantistic.oss-cn-shanghai.aliyuncs.com/pic/index_bg5_min.jpg);
-}
-
-.bg6 {
-  top: 4285px;
-  background-image: url(http://fantistic.oss-cn-shanghai.aliyuncs.com/pic/index_bg6_min.jpg);
-}
-
-.bg7 {
-  top: 5142px;
-  height: 868px;
-  background-image: url(../images/index_bg7_min.jpg);
-}
-
-.bg {
+.big-bg {
   background-repeat: no-repeat;
   background-position: center top;
-  height: 857px;
+  height: 2001px;
   width: 100%;
-  position: absolute;
-  z-index: 0;
-  left: 0;
+  position: relative;
 }
 
-footer {
-  margin: 212px auto 0 auto;
+.big-bg.bg1 {
+  background-image: url(http://fantistic.oss-cn-shanghai.aliyuncs.com/pic/index_big_bg1.jpg);  
+}
+.big-bg.bg2 {
+  background-image: url(../images/images/index_big_bg2.jpg);  
+}
+.big-bg.bg3 {
+  background-image: url(../images/images/index_big_bg3.jpg);  
 }

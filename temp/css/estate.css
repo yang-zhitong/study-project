@@ -53,7 +53,7 @@
 .estate .video .img,
 .estate .video .text,
 .estate .video .sub-text {
-  transition: all 1s ease;
+  transition: transform .7s ease;
 }
 
 .estate .video .img {
@@ -63,16 +63,17 @@
 }
 
 .estate .video:hover > .img {
-  transform: scale(1.2) translateY(-10px);
+  transform: scale(1.2);
 }
 
 .estate .text {
   font-size: 14px;
-  margin: 10px 0;
+  margin: 20px 0 10px 0;
 }
 
 .estate .video:hover > .text {
-  font-size: 18px;
+  transform: scale(1.1);
+  /* font-size: 18px; */
 }
 
 .estate .sub-text {
@@ -80,28 +81,38 @@
 }
 
 .estate .video:hover > .sub-text {
-  font-size: 14px;
+  /* font-size: 14px; */
+  transform: scale(1.1);  
 }
 
 .estate .hand {
-  background: url(../images/hand.png) no-repeat;
-  height: 615px;
+  background-repeat: no-repeat;
+  background: url(../images/hand_sprite.png) no-repeat;
+  height: 661px;
   position: absolute;
   bottom: 0;
+  transition: all .5s ease;
 }
 
 .estate .left-hand {
-  /* left: 7px; */
-  left: 18px;
-  width: 240px;
-  background-position: 0 0;
+  left: 20px;
+  width: 235px;
+  background-position: -220px 0;
 }
 
 .estate .right-hand {
-  right: -5px;
-  /* right: -14px; */
-  width: 240px;
-  background-position: 100% 0;
+  right: -3px;
+  width: 220px;
+  background-position: 0 0;
+}
+
+.estate .left-hand.far {
+  left: -200px;
+  opacity: 0;
+}
+.estate .right-hand.far {
+  right: -200px;
+  opacity: 0;
 }
 
 .estate .video-play-box {
@@ -120,11 +131,19 @@
   display: none;
 }
 
+.estate .video-play-box .embed.show {
+  display: block;
+}  
+
 .estate .video-play-box .preload {
   display: inline-block;
   margin-top: 225px;
   color: #fff;
 }
+
+.estate .video-play-box .preload.hide {
+  display: none;
+}  
 
 .estate .video-play-box .preload-img {
   width: 160px;
@@ -151,5 +170,5 @@
   letter-spacing: 5px;
   color: #fff;
   text-align: left;
-  text-indent: 25px;
+  text-indent: 35px;
 }
