@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  </style>
+  <script src="http://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div>
+    第一组
+    <input type="text" name="user" id="" data-bind="username">
+    <p data-bind="username"></p>
+    <p>另一个input <input type="text" name="user" id="" data-bind="username"> </p>
+  </div>
+  <div>
+
+    第一组
+    <input type="text" name="user" id="" data-bind="phone">
+    <p data-bind="phone"></p>
+    <p>另一个input phone <input type="text" name="user" id="" data-bind="phone"> </p>
+  </div>
+  
+</body>
+<script>
+  // 事件驱动, 触发改变, 发布事件, 执行订阅事件的相关方法
+  var $sub = $({});
+  var form = {};
+  $sub.on('data-bind', function (e, prop, val) {
+    $("[data-bind=" + prop + "]").each(function () {
+      var $bound = $(this);
+
+      if ($bound.is("input,text area,select")) {
+        $bound.val(val);
+      } else {
+        $bound.html(val);
+      }
+      form[prop] = val;      
+    });
+    console.log(form);
+  });
+
+  $(document).on("input change", "[data-bind]", function (evt) {
+    var $input = $(this), prop = $input.data('bind');
+    $sub.trigger('data-bind', [prop, $input.val()]);
+  });
+</script>
+
+</html>
