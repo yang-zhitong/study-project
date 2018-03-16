@@ -16,39 +16,54 @@
     第一组
     <input type="text" name="user" id="" data-bind="username">
     <p data-bind="username"></p>
-    <p>另一个input <input type="text" name="user" id="" data-bind="username"> </p>
+    <p>第一个input
+      <input type="text" name="user" id="" data-bind="username"> </p>
   </div>
   <div>
 
-    第一组
+    第二组
     <input type="text" name="user" id="" data-bind="phone">
     <p data-bind="phone"></p>
-    <p>另一个input phone <input type="text" name="user" id="" data-bind="phone"> </p>
+    <p>另一个input phone
+      <input type="text" name="user" id="" data-bind="phone"> </p>
   </div>
-  
+
 </body>
 <script>
+  // $(document).on("input change", "[data-bind]", function (evt) {
+  //   var $input = $(this), prop = $input.data('bind'), val = $input.val();
+  //   $("[data-bind=" + prop + "]").each(function () {
+  //     var $bound = $(this);
+  //     if ($bound.is("input,text area,select")) {
+  //       $bound.val(val);
+  //     } else {
+  //       $bound.html(val);
+  //     }
+  //   });
+  // });
+
   // 事件驱动, 触发改变, 发布事件, 执行订阅事件的相关方法
-  var $sub = $({});
-  var form = {};
-  $sub.on('data-bind', function (e, prop, val) {
-    $("[data-bind=" + prop + "]").each(function () {
-      var $bound = $(this);
+  // var $sub = $({});
+  // var form = {};
+  // $sub.on('data-bind', function (e, prop, val) {
+  //   $("[data-bind=" + prop + "]").each(function () {
+  //     var $bound = $(this);
 
-      if ($bound.is("input,text area,select")) {
-        $bound.val(val);
-      } else {
-        $bound.html(val);
-      }
-      form[prop] = val;      
-    });
-    console.log(form);
-  });
+  //     if ($bound.is("input,text area,select")) {
+  //       $bound.val(val);
+  //     } else {
+  //       $bound.html(val);
+  //     }
+  //     form[prop] = val;      
+  //   });
+  //   console.log(form);
+  // });
 
-  $(document).on("input change", "[data-bind]", function (evt) {
-    var $input = $(this), prop = $input.data('bind');
-    $sub.trigger('data-bind', [prop, $input.val()]);
-  });
+  // $(document).on("input change", "[data-bind]", function (evt) {
+  //   var $input = $(this), prop = $input.data('bind');
+  //   $sub.trigger('data-bind', [prop, $input.val()]);
+  // });
+
 </script>
 
 </html>

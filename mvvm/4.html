@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="http://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+  <style>
+    #prize {
+      border: 1px solid;
+      padding: 30px;
+      margin: 30px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    第一组
+    <input type="text" name="user" id="" data-bind="prizenum">
+    <p>输入的领奖号码
+      <span data-bind="prizenum"></span>
+    </p>
+  </div>
+  <div id="prize">
+
+  </div>
+</body>
+<script>
+  var prize = (function () {
+    var $dom = $('#prize');
+    var attrs = {
+      state: 4,
+      status: {
+        1: '<p>待审核</p>',
+        2: '<button>可以领奖</button>',
+        3: '<p style="color:#999">已领取</p>',
+        4: '<button>提交领奖号码</button>',
+      },
+      prizenum: null,
+    }
+
+    var render = function () {
+      $dom.html(attrs.status[attrs.state]);
+    };
+    render();
+
+    var set = function (key, val) {
+      if (key in attrs) {
+        if (key === 'prizenum') {
+          $("[data-bind=prizenum]").each(function () {
+            var $bound = $(this);
+            if ($bound.is("input,text area,select")) {
+              $bound.val(val);
+            } else {
+              $bound.html(val);
+            }
+          });
+        }
+        attrs[key] = val;
+        render();
+      }
+    };
+
+    var get = function (key) {
+      // ...
+    };
+
+    $dom.on('click', function () {
+      if (attrs.state === 4) {
+        console.log('提交成功' + attrs.prizenum);
+        set('state', 1);
+        $('body').append('<button class="check">模拟审核通过</button>');
+      } else if (attrs.state === 2) {
+        console.log('领奖成功');
+        set('state', 3);        
+      }
+      render();
+    });
+
+    return {
+      render: render,
+      set: set,
+    }
+  }());
+
+  $(document).on("input change", "[data-bind=prizenum]", function (evt) {
+    var $input = $(this),
+      prop = $input.data('bind'),
+      val = $input.val();
+    // eventModel.trigger('data-bind-' + prop, val);
+    prize.set('prizenum', val);
+  });
+
+  $(document).on('click', '.check', function () {
+    // eventModel.trigger('check');
+    prize.set('state', 2);
+  });
+
+  // 现在还称不上双向绑定
+  // 自动检测data-bind, 去对应的set
+</script>
+
+</html>

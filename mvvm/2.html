@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="http://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div>
+    第一组
+    <input type="text" name="user" id="" data-bind="username">
+    <p data-bind="username"></p>
+    <p>第一个input
+      <input type="text" name="user" id="" data-bind="username"> </p>
+  </div>
+  <div>
+
+    第二组
+    <input type="text" name="user" id="" data-bind="phone">
+    <p data-bind="phone"></p>
+    <p>另一个input phone
+      <input type="text" name="user" id="" data-bind="phone"> </p>
+  </div>
+</body>
+<script>
+  var eventModel = (function () {
+    var clientList = {};
+    var listen = function (key, fn) {
+      if (!clientList[key]) {
+        clientList[key] = [];
+      }
+      clientList[key].push(fn);
+      // console.log('listen', this.clientList);
+    };
+    var trigger = function () {
+      var key = [].shift.call(arguments);
+      var fns = clientList[key];
+
+      // 如果没有对应的绑定消息
+      if (!fns || fns.length === 0) {
+        return false;
+      }
+      
+      for (var i = 0, fn; fn = fns[i++];) {
+        // arguments 是 trigger带上的参数
+        fn.apply(this, arguments);
+      }
+    }
+    return {
+      listen,
+      trigger,
+    }
+  }());
+
+  eventModel.listen("data-bind", function (data) {
+    var prop = data[0], val = data[1];
+    $("[data-bind=" + prop + "]").each(function () {
+      var $bound = $(this);
+      if ($bound.is("input,text area,select")) {
+        $bound.val(val);
+      } else {
+        $bound.html(val);
+      }
+    });
+  });
+
+  $(document).on("input change", "[data-bind]", function (evt) {
+    var $input = $(this),
+      prop = $input.data('bind');
+    eventModel.trigger('data-bind', [prop, $input.val()]);
+  });
+
+  // var imitate = (function () {
+  //   var imitate = {
+  //     clientList: [],
+  //     listen: function (key, fn) {
+  //       if (!this.clientList[key]) {
+  //         this.clientList[key] = [];
+  //       }
+  //       this.clientList[key].push(fn);
+  //       // console.log('listen', this.clientList);
+  //     },
+  //     trigger: function () {
+  //       var key = [].shift.call(arguments);
+  //       var fns = this.clientList[key];
+
+  //       // 如果没有对应的绑定消息
+  //       if (!fns || fns.length === 0) {
+  //         return false;
+  //       }
+  //       for (var i = 0, fn; fn = fns[i++];) {
+  //         // arguments 是 trigger带上的参数
+  //         fn.apply(this, arguments);
+  //       }
+  //     }
+  //   }
+  //   return function () {
+  //     return Object.create(imitate);
+  //   }
+  // })();
+
+  // var eventModel = imitate(); //得到上面的对象
+
+  // eventModel.listen("jimmy", function () {
+  //   console.log("jimmy");
+  // }); //jimmy
+
+  // eventModel.trigger("jimmy");
+</script>
+
+</html>
