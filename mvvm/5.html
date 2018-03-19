@@ -18,55 +18,12 @@
 </head>
 
 <body>
-  <div>
-    第一组
-    <input type="text" name="user" id="" data-bind="name">
-    <p>name
-      <span data-bind="name"></span>
-    </p>
-  </div>
-  <div id="prize">
-
-  </div>
 </body>
 <script>
   var data = {
     name: 'test',
+    age: '18',
   };
-
-  observe(data);
-
-
-  function observe(data) {
-    if (!data || typeof data !== 'object') {
-      return;
-    }
-    // 取出所有属性遍历
-    Object.keys(data).forEach(function (key) {
-      defineReactive(data, key, data[key]);
-    });
-  };
-
-  function defineReactive(data, key, val) {
-    observe(val); // 监听子属性
-
-    var dep = new Dep();
-    // dep.addSub()
-    Object.defineProperty(data, key, {
-      enumerable: true, // 可枚举
-      configurable: false, // 不能再define
-      get: function () {
-        // Dep.target && dep.addDep(Dep.target);
-        return val;
-      },
-      set: function (newVal) {
-        if (val === newVal) return;
-        console.log('哈哈哈，监听到值变化了 ', val, ' --> ', newVal);
-        val = newVal;
-        dep.notify(); // 发出通知
-      }
-    });
-  }
 
   function Dep() {
     this.subs = [];
@@ -83,10 +40,51 @@
     }
   };
 
-  // 
-  $('[data-bind="name"]').each(function () {
+  observe(data);
 
-  });
+  function observe(data) {
+    if (!data || typeof data !== 'object') {
+      return;
+    }
+    // 取出所有属性遍历
+    Object.keys(data).forEach(function (key) {
+      defineReactive(data, key, data[key]);
+    });
+  };
+
+  function defineReactive(data, key, val) {
+    observe(val); // 监听子属性
+
+    var dep = new Dep();
+    console.log(dep);
+    Object.defineProperty(data, key, {
+      enumerable: true, // 可枚举
+      configurable: false, // 不能再define
+      get: function () {
+        Dep.target && dep.addSub(Dep.target);
+        return val;
+      },
+      set: function (newVal) {
+        if (val === newVal) return;
+        console.log('现在处于set阶段', val, ' --> ', newVal);
+        console.log('发布消息通知我的订阅者', dep);
+        val = newVal;
+        dep.notify(); // 发出通知
+      }
+    });
+  }
+
+  function Watch(prop, cb) {
+    Dep.target = this;
+    this.value = data[prop];
+    Dep.target = null;
+    this.update = function () {
+      cb();
+    };
+  }
+
+  new Watch("name", () => console.log("我是第一个订阅者"))
+  new Watch("name", () => console.log("我是第二个订阅者"))
 </script>
 
 </html>
