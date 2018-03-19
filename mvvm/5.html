@@ -30,21 +30,6 @@
   </div>
 </body>
 <script>
-  function Dep() {
-    this.subs = [];
-  }
-
-  Dep.prototype = {
-    addSub: function (sub) {
-      this.subs.push(sub);
-    },
-    notify: function () {
-      this.subs.forEach(function (sub) {
-        sub.update();
-      });
-    }
-  };
-
   var data = {
     name: 'test',
   };
@@ -66,26 +51,42 @@
     observe(val); // 监听子属性
 
     var dep = new Dep();
-
+    // dep.addSub()
     Object.defineProperty(data, key, {
       enumerable: true, // 可枚举
       configurable: false, // 不能再define
       get: function () {
-        Dep.target && dep.addDep(Dep.target);
+        // Dep.target && dep.addDep(Dep.target);
         return val;
       },
       set: function (newVal) {
         if (val === newVal) return;
         console.log('哈哈哈，监听到值变化了 ', val, ' --> ', newVal);
         val = newVal;
-        dep.notify(); // 通知所有订阅者
+        dep.notify(); // 发出通知
       }
     });
-
-    $('[data-bind="name"']).each(function() {
-      
-    });
   }
+
+  function Dep() {
+    this.subs = [];
+  }
+
+  Dep.prototype = {
+    addSub: function (sub) {
+      this.subs.push(sub);
+    },
+    notify: function () {
+      this.subs.forEach(function (sub) {
+        sub.update();
+      });
+    }
+  };
+
+  // 
+  $('[data-bind="name"]').each(function () {
+
+  });
 </script>
 
 </html>
