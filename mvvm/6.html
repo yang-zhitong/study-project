@@ -18,13 +18,14 @@
 </head>
 
 <body>
-  <div id="root">{{name}]</div>
+  <div id="root">{{name}}
+    <p>{{age}}</p>
+  </div>
 </body>
 <script>
   function Dep() {
     this.subs = [];
   }
-
   Dep.prototype = {
     addSub: function (sub) {
       this.subs.push(sub);
@@ -55,42 +56,28 @@
       configurable: false, // 不能再define
       get: function () {
         Dep.target && dep.addSub(Dep.target);
-        console.log('target', key, Dep.target);
         return val;
       },
       set: function (newVal) {
         if (val === newVal) return;
-        console.log('现在处于set阶段', val, ' --> ', newVal);
-        console.log('发布消息通知我的订阅者', dep);
         val = newVal;
         dep.notify(); // 发出通知
       }
     });
   }
 
-  // function Watch(vm, prop, cb) {
-  //   Dep.target = this;
-  //   console.log(vm._data);
-  //   this.value = vm._data[prop];
-  //   Dep.target = null;
-  //   this.update = function () {
-  //     cb();
-  //   };
-  // }
-
   function Watcher(vm, exp, cb) {
     this.cb = cb;
     this.vm = vm;
     this.exp = exp;
-    this.value = this.get();  // 将自己添加到订阅器的操作
+    this.value = this.get(); // 将自己添加到订阅器的操作
   }
-
   Watcher.prototype = {
     update: function () {
       this.run();
     },
     run: function () {
-      var value = this.vm.data[this.exp];
+      var value = this.vm._data[this.exp];
       var oldVal = this.value;
       if (value !== oldVal) {
         this.value = value;
@@ -100,7 +87,7 @@
     get: function () {
       Dep.target = this;
       // 缓存自己 
-      var value = this.vm.data[this.exp]
+      var value = this.vm._data[this.exp]
       // 强制执行监听器里的get函数
       Dep.target = null;
       // 释放自己
@@ -108,18 +95,77 @@
     }
   };
 
+  function Compile(options, vm) {
+    this.vm = vm;
+    this.fragment = this.nodeToFragment(options.el);
+    this.compileElement(this.fragment);
+    this.vm.$el.appendChild(this.fragment);
+  }
+
+  Compile.prototype = {
+    nodeToFragment: function (el) {
+      var fragment = document.createDocumentFragment();
+      var child = el.firstChild;
+      while (child) {
+        fragment.appendChild(child);
+        child = el.firstChild;
+      }
+      return fragment;
+    },
+    compileElement: function (el) {
+      var childNodes = el.childNodes;
+      var self = this;
+      // [].slice.call(childNodes)
+      [...childNodes].forEach(function (node) {
+        var reg = /\{\{(.*?)\}\}/;
+        var text = node.textContent;
+
+        console.log(node.nodeType, text, reg.test(text));
+
+        if (node.nodeType == 3 && reg.test(text)) {
+          self.compileText(node, reg.exec(text)[1]);
+        }
+
+        if (node.childNodes && node.childNodes.length) {
+          self.compileElement(node); // 递归遍历子节点
+        }
+      });
+    },
+    compileText: function (node, exp) {
+      // expression 表达式或者属性 prop
+      var self = this;
+      var initText = this.vm[exp];
+      console.log(node, node.textContent);
+      node.textContent = initText;
+      new Watcher(this.vm, exp, function(value) {
+        node.textContent = value;
+      });
+    },
+  }
+
+
   function Vue(options) {
     var self = this;
-    this.$el = document.querySelector(options.el);
-    this.data = options.data;
-    observe(this.data);
-    this.$el.innerHTML = this.data[options.exp]; // 初始化一次
-    new Watcher(this, options.exp, function(value, oldVal) {
-      console.log(this, value, oldVal);
-      this.$el.innerHTML = value;
-    });
+    var data = this._data = options.data;
+    options.el = this.$el = document.querySelector(options.el);
+
+    Object.keys(data).forEach((key) => this._proxy(key));
+
+    observe(data);
+
+    new Compile(options, this);
     return this;
   }
+
+  Vue.prototype._proxy = function (key) {
+    var self = this;
+    Object.defineProperty(this, key, {
+      enumerable: false, // 和observe不同, 不可枚举, 但是在源码中是可以枚举的
+      configurable: true,
+      get: () => self._data[key],
+      set: (newVal) => self._data[key] = newVal,
+    });
+  };
 
   var demo = new Vue({
     el: '#root',
@@ -127,10 +173,8 @@
       name: 'test',
       age: '18',
     },
-    exp: 'name',
   })
 
-  // demo.$watch('name', () => console.log('wacth'));
   console.log(demo);
 </script>
 
